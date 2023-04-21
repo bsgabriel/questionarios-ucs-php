@@ -13,9 +13,7 @@ class PostgresDaoFactory extends DaoFactory
 
     public function getConnection()
     {
-
         $this->conn = null;
-
         try {
             $this->conn = new PDO("pgsql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name, $this->username, $this->password);
         } catch (PDOException $exception) {
@@ -24,12 +22,14 @@ class PostgresDaoFactory extends DaoFactory
         return $this->conn;
     }
 
-    public function getElaboradorDao() {
-        return new PostgresUsuarioDao($this->getConnection());
+    public function getElaboradorDao()
+    {
+        return new PostgresElaboradorDao($this->getConnection());
     }
 
-    public function getRespondenteDao() {
-        return new PostgresUsuarioDao($this->getConnection());
+    public function getRespondenteDao()
+    {
+        return new PostgresRespondenteDao($this->getConnection());
     }
 }
 ?>
