@@ -16,7 +16,7 @@ if (strcmp($tipoUsuario, "E") == 0) {
     $factory->getElaboradorDao()->alterar(new Elaborador($codUsuario, $login, $senha, $nome, $email, $extra));
   else
     $factory->getElaboradorDao()->inserir(new Elaborador(null, $login, $senha, $nome, $email, $extra));
-} else if (strcmp($tipoUsuario, "R")) {
+} else if (strcmp($tipoUsuario, "R") == 0) {
   if ($codUsuario)
     $factory->getRespondenteDao()->alterar(new Respondente($codUsuario, $login, $senha, $nome, $email, $extra));
   else
