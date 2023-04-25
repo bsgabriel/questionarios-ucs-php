@@ -11,7 +11,7 @@ $extra = $_POST['extra']; // Pode ser tanto a insituição (elaborador) quanto t
 
 include_once "fachada.php";
 
-if (strcmp($tipoUsuario, "E")) {
+if (strcmp($tipoUsuario, "E") == 0) {
   if ($codUsuario)
     $factory->getElaboradorDao()->alterar(new Elaborador($codUsuario, $login, $senha, $nome, $email, $extra));
   else

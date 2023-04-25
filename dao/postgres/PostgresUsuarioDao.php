@@ -13,7 +13,7 @@ abstract class PostgresUsuarioDao extends DAO implements UsuarioDao
 
     public abstract function inserir($usuario);
 
-    public abstract function alterar(&$usuario);
+    public abstract function alterar($usuario);
 
     public function removerPorId($id)
     {

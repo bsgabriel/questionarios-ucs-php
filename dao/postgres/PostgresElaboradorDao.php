@@ -27,21 +27,21 @@ class PostgresElaboradorDao extends PostgresUsuarioDao
     public function inserir($elaborador){
         $query = "INSERT INTO " . $this->table_name .
             " (login, senha, nome, email, instituicao, tipo) VALUES" .
-            " (:login, :senha, :nome, :instituicao, 'E')";
+            " (:login, :senha, :nome, :email, :instituicao, 'E')";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":login", $elaborador->getLogin());
-        $stmt->bindParam(":senha", md5($elaborador->getSenha()));
+        $stmt->bindParam(":senha", $elaborador->getSenha());
         $stmt->bindParam(":nome", $elaborador->getNome());
         $stmt->bindParam(":email", $elaborador->getEmail());
         $stmt->bindParam(":instituicao", $elaborador->getInstituicao());
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
     }
 
     public function alterar($elaborador)

@@ -1,8 +1,7 @@
 <?php
-$titulo_pagina = "Cadastro de Elaborador";
+$titulo_pagina = "Cadastro de elaborador";
 
 include_once "fachada.php";
-echo "<p>testeeeeeee</p>";
 
 $codElaborador = @$_GET["codElaborador"]; // TODO: usar quando for feito edição de elaborador
 $elaborador;
@@ -14,7 +13,6 @@ if ($codElaborador) {
   $elaborador = new Elaborador(null, null, null, null, null, null);
   $txtBtnSalvar = "Cadastrar";
 }
-
 
 include_once "cabecalho.php";
 
@@ -43,7 +41,7 @@ echo "</div>";
 
 echo "<div class='form-group'>";
 echo "<label for='nome'>Nome:</label>";
-echo "<input type='number' class='form-control' id='nome' name='nome' required value='{$elaborador->getNome()}'/>";
+echo "<input type='text' class='form-control' id='nome' name='nome' required value='{$elaborador->getNome()}'/>";
 echo "</div>";
 
 echo "<div class='form-group'>";
@@ -56,7 +54,7 @@ echo "<label for='extra'>Instituicao:</label>";
 echo "<input type='text' class='form-control' id='extra' name='extra' required value='{$elaborador->getInstituicao()}'/>";
 echo "</div>";
 
-echo "</div>";
+echo "<div>";
 echo "<button type='submit' class='btn btn-primary'>{$txtBtnSalvar}</button>";
 echo "</form>";
 echo "</div>"

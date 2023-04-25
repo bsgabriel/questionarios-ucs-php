@@ -7,7 +7,7 @@ class PostgresRespondenteDao extends PostgresUsuarioDao
     public function alterar($usuario)
     {
         $query = "UPDATE " . $this->table_name .
-            " SET login = :login, senha = :senha, nome = :nome" .
+            " SET login = :login, senha = :senha, nome = :nome, telefone = :telefone" .
             " WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
@@ -15,6 +15,7 @@ class PostgresRespondenteDao extends PostgresUsuarioDao
         $stmt->bindParam(":login", $usuario->getLogin());
         $stmt->bindParam(":senha", md5($usuario->getSenha()));
         $stmt->bindParam(":nome", $usuario->getNome());
+        $stmt->bindParam(":telefone", $usuario->getTelefone());
         $stmt->bindParam(':id', $usuario->getId());
 
         if ($stmt->execute()) {
