@@ -23,5 +23,5 @@ if (strcmp($tipoUsuario, "E") == 0) {
     $factory->getRespondenteDao()->inserir(new Respondente(null, $login, $senha, $nome, $email, $extra));
 }
 
-// header("Location: listaVeiculos.php");
+header("Location: menuCadastro.html");
 ?>
