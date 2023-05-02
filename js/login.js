@@ -32,7 +32,7 @@ function executarLogin(usuario, senha) {
     { login: usuario, senha: senha },
     function (response) {
       if (response.status === "success") {
-        window.location.href = "menuCadastro.html";
+        window.location.href = "menuInicial.html";
       } else {
         exibirPopup(response.message);
       }
