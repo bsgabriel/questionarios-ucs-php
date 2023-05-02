@@ -53,7 +53,7 @@ class PostgresElaboradorDao extends PostgresUsuarioDao
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":login", $elaborador->getLogin());
-        $stmt->bindParam(":senha", md5($elaborador->getSenha()));
+        $stmt->bindParam(":senha", $elaborador->getSenha());
         $stmt->bindParam(":nome", $elaborador->getNome());
         $stmt->bindParam(':id', $elaborador->getId());
         $stmt->bindParam(":email", $elaborador->getEmail());

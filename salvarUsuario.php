@@ -3,8 +3,8 @@ $tipoUsuario = $_GET['tipoUsuario'];
 $codUsuario = $_GET['codUsuario'];
 
 $login = $_POST['login'];
-$senha = $_POST['senha'];
-$senhaConfirma = $_POST['senhaConfirma'];
+$senha = isset($_POST["senha"]) ? md5(trim($_POST["senha"])) : FALSE;
+$senha = isset($_POST["senhaConfirma"]) ? md5(trim($_POST["senhaConfirma"])) : FALSE;
 $nome = $_POST['nome'];
 $email = $_POST['email'];
 $extra = $_POST['extra']; // Pode ser tanto a insituição (elaborador) quanto telefone (respondente)

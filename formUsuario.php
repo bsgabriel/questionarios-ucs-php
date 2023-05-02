@@ -1,5 +1,11 @@
 <?php
+include_once "GlobalKeys.php";
 include_once "fachada.php";
+
+session_start();
+
+echo "<p>ID: {$_SESSION[GlobalKeys::ID_USUARIO_AUTENTICADO]}}</p>";
+echo "<p>Tipo usuario: {$_SESSION[GlobalKeys::TIPO_USUARIO_AUTENTICADO]}}</p>";
 
 $tipoUsuario = @$_GET["tipoUsuario"];
 $codUsuario = @$_GET["codUsuario"]; // TODO: usar quando for feito edição de elaborador

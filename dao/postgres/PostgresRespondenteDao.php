@@ -13,7 +13,7 @@ class PostgresRespondenteDao extends PostgresUsuarioDao
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":login", $usuario->getLogin());
-        $stmt->bindParam(":senha", md5($usuario->getSenha()));
+        $stmt->bindParam(":senha", $usuario->getSenha());
         $stmt->bindParam(":nome", $usuario->getNome());
         $stmt->bindParam(":telefone", $usuario->getTelefone());
         $stmt->bindParam(':id', $usuario->getId());

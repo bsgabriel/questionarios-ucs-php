@@ -63,6 +63,16 @@ abstract class Usuario
   {
     $this->email = $email;
   }
+
+  public function getTipo()
+  {
+    return $this->tipo;
+  }
+
+  public function setTipo($tipo)
+  {
+    $this->tipo = $tipo;
+  }
 }
 
 ?>
