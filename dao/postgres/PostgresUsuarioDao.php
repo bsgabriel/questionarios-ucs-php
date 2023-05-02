@@ -4,16 +4,23 @@ include_once('UsuarioDao.php');
 include_once('dao/DAO.php');
 include_once('../model/Elaborador.php');
 include_once('../model/Respondente.php');
+include_once('../model/Administrador.php');
 
-abstract class PostgresUsuarioDao extends DAO implements UsuarioDao
+class PostgresUsuarioDao extends DAO implements UsuarioDao
 {
     protected $table_name = 'usuarios';
 
-    public abstract function buscarTodos();
+    public function buscarTodos()
+    {
+    }
 
-    public abstract function inserir($usuario);
+    public function inserir($usuario)
+    {
+    }
 
-    public abstract function alterar($usuario);
+    public function alterar($usuario)
+    {
+    }
 
     public function removerPorId($id)
     {
@@ -89,6 +96,8 @@ abstract class PostgresUsuarioDao extends DAO implements UsuarioDao
             $usuario = new Elaborador($row['id'], $row['login'], $row['senha'], $row['nome'], $row['email'], $row['instituicao']);
         } else if ($row['tipo'] == 'R') {
             $usuario = new Respondente($row['id'], $row['login'], $row['senha'], $row['nome'], $row['email'], $row['telefone']);
+        } else if ($row['tipo'] == 'A') {
+            $usuario = new Administrador($row['id'], $row['login'], $row['senha'], $row['nome'], $row['email']);
         }
 
         return $usuario;

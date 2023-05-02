@@ -31,5 +31,10 @@ class PostgresDaoFactory extends DaoFactory
     {
         return new PostgresRespondenteDao($this->getConnection());
     }
+
+    public function getUsuarioDao()
+    {
+        return new PostgresUsuarioDao($this->getConnection());
+    }
 }
 ?>

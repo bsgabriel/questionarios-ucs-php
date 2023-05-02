@@ -5,7 +5,7 @@ interface UsuarioDao
   public function remover($id);
   public function alterar($usuario);
   public function buscarPorId($id);
-  public function buscarPorLogin($id);
+  public function buscarPorLogin($login,);
   public function buscarTodos();
 }
 ?>
