@@ -28,7 +28,7 @@ function criarLinha(elaborador) {
   email.innerHTML = elaborador.email;
   instituicao.innerHTML = elaborador.instituicao;
   editar.appendChild(createLink("E", "#"));
-  excluir.appendChild(createLink("X", "#"));
+  excluir.appendChild(createLink("X", "excluirUsuario.php?id=" + elaborador.id));
 
   editar.classList.add("text-center");
   excluir.classList.add("text-center");
