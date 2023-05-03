@@ -8,7 +8,7 @@ function carregarMenu() {
   // TODO achar outra alternativa para o uso do cookie
   const tipUsuario = getCookie("TIPO_USUARIO_AUTENTICADO");
   if (tipUsuario === "A") {
-    $("#menuNav").append(createItem("Elaboradores", "listaElaborador.php"));
+    $("#menuNav").append(createItem("Elaboradores", "elaboradores.html"));
   } else if (tipUsuario === "E") {
     $("#menuNav").append(createItem("Criar questão", "#"));
     $("#menuNav").append(createItem("Criar Questionários", "#"));

@@ -13,7 +13,6 @@ foreach ($elaboradores as $elaborador) {
   "instituicao" => $elaborador->getInstituicao(),
   "tipo" => $elaborador->getTipo()
  );
-
- var_dump(json_encode($list));
 }
+echo json_encode($list);
 ?>
