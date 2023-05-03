@@ -11,7 +11,7 @@ class PostgresElaboradorDao extends PostgresUsuarioDao
                     id, login, senha, nome, email, instituicao
                 FROM
                     " . $this->table_name . 
-                    " ORDER BY id ASC";
+                    " WHERE tipo = 'E' ORDER BY id ASC";
      
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();

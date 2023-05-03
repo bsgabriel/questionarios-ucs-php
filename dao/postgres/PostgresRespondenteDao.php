@@ -31,7 +31,7 @@ class PostgresRespondenteDao extends PostgresUsuarioDao
         id, login, senha, nome, email, telefone
     FROM
         " . $this->table_name .
-            " ORDER BY id ASC";
+            " WHERE TIPO = 'R' ORDER BY id ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
