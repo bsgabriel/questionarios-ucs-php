@@ -12,7 +12,6 @@ function carregarElaboradores() {
 }
 
 function criarLinha(elaborador) {
-  // .getElementsByTagName("tbody")[0].insertRow(table.length);
   const table = document.getElementById("tabelaElaboradores");
   const row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
 
@@ -27,7 +26,7 @@ function criarLinha(elaborador) {
   usuario.innerHTML = elaborador.login;
   email.innerHTML = elaborador.email;
   instituicao.innerHTML = elaborador.instituicao;
-  editar.appendChild(createLink("E", "#"));
+  editar.appendChild(createLinkEdicao(elaborador.id));
   excluir.appendChild(createLinkExclusao(elaborador.id));
 
   editar.classList.add("text-center");
@@ -36,21 +35,16 @@ function criarLinha(elaborador) {
 
 function createLinkExclusao(id) {
   const link = createLink("X", "excluirUsuario.php?id=" + id);
-  link.onclick = ((event) => {
-    if(!confirm("Confirmar exclusão?")){
+  link.onclick = (event) => {
+    if (!confirm("Confirmar exclusão?")) {
       event.preventDefault();
     }
-  });
+  };
   return link;
 }
 
 function createLinkEdicao(id) {
-  const link = createLink("X", "#");
-  // link.onclick = ((event) => {
-  //   if(!confirm("Confirmar exclusão?")){
-  //     event.preventDefault();
-  //   }
-  // });
+  const link = createLink("E", "formUsuario.html?tipoUsuario=E&codUsuario="+id);
   return link;
 }
 
