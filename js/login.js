@@ -22,10 +22,6 @@ function loginEvent() {
   executarLogin(usuario, senha);
 }
 
-function isEmpty(value) {
-  return !value || value.trim() === "";
-}
-
 function executarLogin(usuario, senha) {
   $.post(
     "login.php",
@@ -41,9 +37,4 @@ function executarLogin(usuario, senha) {
   ).fail(function (xhr, status, error) {
     console.error(error);
   });
-}
-
-function exibirPopup(message) {
-  $("#mdlDescricao").text(message);
-  $('#janelaModal').modal('show');
 }
