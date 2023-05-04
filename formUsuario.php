@@ -1,90 +1,70 @@
 <?php
-include_once "GlobalKeys.php";
+
+$codUsuario = isset($_POST["codUsuario"]) ? addslashes(trim($_POST["codUsuario"])) : FALSE;
+$tipoUsuario = isset($_POST["tipoUsuario"]) ? addslashes(trim($_POST["tipoUsuario"])) : FALSE;
+$login = isset($_POST["login"]) ? addslashes(trim($_POST["login"])) : FALSE;
+$senha = isset($_POST["senha"]) ? md5(trim($_POST["senha"])) : FALSE;
+$nome = isset($_POST["nome"]) ? addslashes(trim($_POST["nome"])) : FALSE;
+$email = isset($_POST["email"]) ? addslashes(trim($_POST["email"])) : FALSE;
+$extra = isset($_POST["extra"]) ? addslashes(trim($_POST["extra"])) : FALSE;
+
 include_once "fachada.php";
 
-session_start();
+/* ------ verificação de nome de usuário já existente ------ */
+$usuarioExistente = $factory->getUsuarioDao()->buscarPorLogin($login);
+if (!is_null($usuarioExistente)) {
 
-echo "<p>ID: {$_SESSION[GlobalKeys::ID_USUARIO_AUTENTICADO]}}</p>";
-echo "<p>Tipo usuario: {$_SESSION[GlobalKeys::TIPO_USUARIO_AUTENTICADO]}}</p>";
+  // se for inserção, não há ID para comparar
+  if (!$codUsuario) {
+    $response = array(
+      "status" => "error",
+      "message" => "Nome de usuario já está sendo usado",
+      "tipoCadastro" => "Inserção"
+    );
+    echo json_encode($response);
+    exit;
+  }
 
-$tipoUsuario = @$_GET["tipoUsuario"];
-$codUsuario = @$_GET["codUsuario"]; // TODO: usar quando for feito edição de elaborador
-$usuario;
-$txtBtnSalvar;
+  // se for alteração, compara o código de usuário que está sendo editado com o que foi retornado da busca
+  // if ($usuarioExistente->getId() !== $codUsuario) {
+  if (strcmp($codUsuario, $usuarioExistente->getId()) != 0) {
+    $response = array(
+      "status" => "error",
+      "message" => "Nome de usuario já está sendo usado",
+      "tipoCadastro" => "Alteração"
+    );
+    echo json_encode($response);
+    exit;
+  }
+}
+
+/* ------ Alteração ------ */
 if ($codUsuario) {
   if (strcmp($tipoUsuario, "E") == 0)
-    $usuario = $factory->getElaboradorDao()->buscarPorId($codUsuario);
+    $factory->getElaboradorDao()->alterar(new Elaborador($codUsuario, $login, $senha, $nome, $email, $extra));
   else if (strcmp($tipoUsuario, "R") == 0)
-    $usuario = $factory->getRespondenteDao()->buscarPorId($codUsuario);
+    $factory->getRespondenteDao()->alterar(new Respondente($codUsuario, $login, $senha, $nome, $email, $extra));
 
-  $txtBtnSalvar = "Salvar";
-  // $titulo_pagina = "Alteração de " . strcmp($tipoUsuario, "E") == 0 ? "elaborador" : "respondente";
-  $titulo_pagina = "Alteração de usuário";
-} else {
-  if ($tipoUsuario == 'E')
-    $usuario = new Elaborador(null, null, null, null, null, null);
-  else if ($tipoUsuario == 'R')
-    $usuario = new Respondente(null, null, null, null, null, null);
-
-  $txtBtnSalvar = "Cadastrar";
-  // $titulo_pagina = "Cadastro de " . strcmp($tipoUsuario, "E") == 0 ? "elaborador" : "respondente";
-  $titulo_pagina = "Cadastro de usuário";
+  $response = array(
+    "status" => "success",
+    "message" => "Alteração realizada com sucesso!",
+    "tipoCadastro" => "Alteração"
+  );
+  echo json_encode($response);
+  exit;
 }
 
-include_once "cabecalho.php";
+/* ----- Inserção ----- */
+if (strcmp($tipoUsuario, "E") == 0)
+  $factory->getElaboradorDao()->inserir(new Elaborador(null, $login, $senha, $nome, $email, $extra));
+else if (strcmp($tipoUsuario, "R") == 0)
+  $factory->getRespondenteDao()->inserir(new Respondente(null, $login, $senha, $nome, $email, $extra));
 
-echo "<div class='container mt-5'>";
-echo "<h1>$titulo_pagina</h1>";
-
-if ($codUsuario)
-  echo "<form action='salvarUsuario.php?tipoUsuario={$tipoUsuario}&codUsuario={$codUsuario}' method='POST'>";
-else
-  echo "<form action='salvarUsuario.php?tipoUsuario={$tipoUsuario}' method='POST'>";
-
-echo "<div class='form-group'>";
-echo "<label for='login'>Login:</label>";
-echo "<input type='text' class='form-control' id='login' name='login' required value='{$usuario->getLogin()}'/>";
-echo "</div>";
-
-echo "<div class='form-group'>";
-echo "<label for='senha'>Senha:</label>";
-echo "<input type='text' class='form-control' id='senha' name='senha' required'/>";
-echo "</div>";
-
-echo "<div class='form-group'>";
-echo "<label for='senhaConfirma'>Confirmar senha:</label>";
-echo "<input type='text' class='form-control' id='senhaConfirma' name='senhaConfirma' required'/>";
-echo "</div>";
-
-echo "<div class='form-group'>";
-echo "<label for='nome'>Nome:</label>";
-echo "<input type='text' class='form-control' id='nome' name='nome' required value='{$usuario->getNome()}'/>";
-echo "</div>";
-
-echo "<div class='form-group'>";
-echo "<label for='email'>Email:</label>";
-echo "<input type='text' class='form-control' id='email' name='email' required value='{$usuario->getEmail()}'/>";
-echo "</div>";
-
-echo "<div class='form-group'>";
-
-if (strcmp($tipoUsuario, "E") == 0) {
-  echo "<label for='extra'>Instituição:</label>";
-  echo "<input type='text' class='form-control' id='extra' name='extra' required value='{$usuario->getInstituicao()}'/>";
-} else if (strcmp($tipoUsuario, "R") == 0) {
-  echo "<label for='extra'>Telefone:</label>";
-  echo "<input type='text' class='form-control' id='extra' name='extra' required value='{$usuario->getTelefone()}'/>";
-}
-
-echo "</div>";
-
-echo "<div>";
-echo "<button type='submit' class='btn btn-primary'>{$txtBtnSalvar}</button>";
-echo "</form>";
-echo "</div>";
-
-?>
-
-<?php
-include_once "rodape.php";
+$response = array(
+  "status" => "success",
+  "message" => "Cadastro realizado com sucesso!",
+  "tipoCadastro" => "Inserção"
+);
+echo json_encode($response);
+exit;
 ?>
