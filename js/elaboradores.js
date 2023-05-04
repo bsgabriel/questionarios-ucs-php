@@ -38,5 +38,10 @@ function createLink(text, url) {
   const link = document.createElement("a");
   link.setAttribute("href", url);
   link.appendChild(document.createTextNode(text));
+  link.onclick = ((event) => {
+    if(!confirm("Confirmar exclusão?")){
+      event.preventDefault();
+    }
+  });
   return link;
 }
