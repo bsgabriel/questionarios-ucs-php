@@ -28,20 +28,36 @@ function criarLinha(elaborador) {
   email.innerHTML = elaborador.email;
   instituicao.innerHTML = elaborador.instituicao;
   editar.appendChild(createLink("E", "#"));
-  excluir.appendChild(createLink("X", "excluirUsuario.php?id=" + elaborador.id));
+  excluir.appendChild(createLinkExclusao(elaborador.id));
 
   editar.classList.add("text-center");
   excluir.classList.add("text-center");
+}
+
+function createLinkExclusao(id) {
+  const link = createLink("X", "excluirUsuario.php?id=" + id);
+  link.onclick = ((event) => {
+    if(!confirm("Confirmar exclusão?")){
+      event.preventDefault();
+    }
+  });
+  return link;
+}
+
+function createLinkEdicao(id) {
+  const link = createLink("X", "#");
+  // link.onclick = ((event) => {
+  //   if(!confirm("Confirmar exclusão?")){
+  //     event.preventDefault();
+  //   }
+  // });
+  return link;
 }
 
 function createLink(text, url) {
   const link = document.createElement("a");
   link.setAttribute("href", url);
   link.appendChild(document.createTextNode(text));
-  link.onclick = ((event) => {
-    if(!confirm("Confirmar exclusão?")){
-      event.preventDefault();
-    }
-  });
+
   return link;
 }
