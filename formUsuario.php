@@ -26,7 +26,6 @@ if (!is_null($usuarioExistente)) {
   }
 
   // se for alteração, compara o código de usuário que está sendo editado com o que foi retornado da busca
-  // if ($usuarioExistente->getId() !== $codUsuario) {
   if (strcmp($codUsuario, $usuarioExistente->getId()) != 0) {
     $response = array(
       "status" => "error",

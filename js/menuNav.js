@@ -7,6 +7,8 @@ function carregarMenu() {
 
   // TODO achar outra alternativa para o uso do cookie
   const tipUsuario = getCookie("TIPO_USUARIO_AUTENTICADO");
+  const idUsuario = getCookie("ID_USUARIO_AUTENTICADO");
+
   if (tipUsuario === "A") {
     $("#menuNav").append(createItem("Elaboradores", "elaboradores.html"));
   } else if (tipUsuario === "E") {
@@ -15,7 +17,7 @@ function carregarMenu() {
     $("#menuNav").append(createItem("Oferecer Questionário", "#"));
   } else {
     $("#menuNav").append(createItem("Responder Questionário", "#"));
-    $("#menuNav").append(createItem("Editar Conta", "#"));
+    $("#menuNav").append(createItem("Editar Conta", "formUsuario.html?tipoUsuario=R&codUsuario=" + idUsuario));
   }
   $("#menuNav").append(createItem("Logout", "login.html"));
 }
@@ -29,7 +31,6 @@ function createItem(text, url) {
   const link = document.createElement("a");
   link.classList.add("nav-link");
   link.setAttribute("href", url);
-  // link.innerText = text;
   link.appendChild(document.createTextNode(text));
 
   item.appendChild(link);

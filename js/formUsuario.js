@@ -52,7 +52,11 @@ function submitEvent() {
     function (response) {
       exibirPopup(response.message);
       if (response.status === "success") {
-        window.location.href = "menuInicial.html";
+        if (response.tipoCadastro === "Inserção" && tipoUsuario === "R") {
+          window.location.href = "login.html";
+        } else {
+          window.location.href = "menuInicial.html";
+        }
       }
     },
     "json"

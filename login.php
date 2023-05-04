@@ -42,6 +42,7 @@ if (strcmp($senha, $usuario->getSenha())) {
 
 // TODO procurar outra alternativa ao invés de armazenar o cookie com tipo de usuário
 setcookie(GlobalKeys::TIPO_USUARIO_AUTENTICADO, $usuario->getTipo());
+setcookie(GlobalKeys::ID_USUARIO_AUTENTICADO, $usuario->getId());
 
 $_SESSION[GlobalKeys::ID_USUARIO_AUTENTICADO] = $usuario->getId();
 $_SESSION[GlobalKeys::TIPO_USUARIO_AUTENTICADO] = $usuario->getTipo();
