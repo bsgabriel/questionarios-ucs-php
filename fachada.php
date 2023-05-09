@@ -3,6 +3,8 @@ error_reporting(E_ERROR | E_PARSE);
 include_once('model/Elaborador.php');
 include_once('model/Respondente.php');
 include_once('model/Administrador.php');
+include_once('model/Questao.php');
+include_once('model/Alternativa.php');
 include_once('dao/UsuarioDAO.php');
 include_once('dao/postgres/PostgresElaboradorDao.php');
 include_once('dao/postgres/PostgresRespondenteDao.php');

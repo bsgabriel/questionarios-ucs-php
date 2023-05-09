@@ -1,6 +1,8 @@
 <?php
 include_once('dao/DaoFactory.php');
 include_once('PostgresUsuarioDao.php');
+include_once('PostgresAlternativaDao.php');
+include_once('PostgresQuestaoDao.php');
 
 class PostgresDaoFactory extends DaoFactory
 {
@@ -35,6 +37,16 @@ class PostgresDaoFactory extends DaoFactory
     public function getUsuarioDao()
     {
         return new PostgresUsuarioDao($this->getConnection());
+    }
+
+    public function getQuestaoDao()
+    {
+        return new PostgresQuestaoDao($this->getConnection());
+    }
+
+    public function getAlternativaDao()
+    {
+        return new PostgresAlternativaDao($this->getConnection());
     }
 }
 ?>
