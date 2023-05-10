@@ -6,8 +6,8 @@ $(document).ready(() => {
 });
 
 function cadastrarQuestao() {
-  if (!$("input[name='tipo']:checked").val()) {
-    return false;
+  if (!validarCampos()) {
+    return;
   }
 
   const tipoQuestao = $("input[name='tipo']:checked").val();
@@ -30,10 +30,10 @@ function cadastrarQuestao() {
     data,
     function (response) {
       if (response.status === "success") {
-        console.log(response.message);
+        exibirPopup(response.message);
         window.location.href = "menuInicial.html";
       } else {
-        console.log(response.message);
+        exibirPopup(response.message);
         console.log(response.stackTrace);
       }
     },
@@ -43,6 +43,33 @@ function cadastrarQuestao() {
   });
 }
 
+function validarCampos() {
+  if (isEmpty($("#descricao").val())) {
+    exibirPopup("Preencha o enunciado da questão");
+    return false;
+  }
+
+  if (!$("input[name='tipo']:checked").val()) {
+    exibirPopup("Escolha o tipo da questão");
+    return false;
+  }
+
+  const respostasMulti = $("input[name='correta']:checked");
+  const tipQuestao = $("input[name='tipo']:checked").val();
+
+  if (tipQuestao === "M" && respostasMulti.length === 0) {
+    exibirPopup("Selecione pelo menos uma resposta correta");
+    return false;
+  }
+
+  const respostaVF = $("input[name='resposta']:checked");
+  if (tipQuestao === "V" && respostaVF.length === 0) {
+    exibirPopup("Indique se a questão é verdadeira ou falsa");
+    return false;
+  }
+
+  return true;
+}
 function gerarQuestaoMultiplasEscolhas() {
   const corretas = $.map($("input[name='correta']:checked"), (elem, idx) => {
     return $(elem).val();
@@ -116,12 +143,12 @@ function preencheForm(tipo) {
     let s = "<p>Qual a resposta correta?</p>\n";
     s += "<div class='form-check'>\n";
     s += "<label class='form-check-label' for='verdade'>\n";
-    s += "<input type='radio' id='verdade' name='resposta' value='true' required />Verdadeiro\n";
+    s += "<input type='radio' id='verdade' name='resposta' value='true'/>Verdadeiro\n";
     s += "</label>\n";
     s += "</div>\n";
     s += "<div class='form-check'>\n";
     s += "<label class='form-check-label' for='mentira'>\n";
-    s += "<input type='radio' id='mentira' name='resposta' value='false' required />Falso\n";
+    s += "<input type='radio' id='mentira' name='resposta' value='false'/>Falso\n";
     s += "</label>\n";
     s += "</div>\n";
     return s;
@@ -139,7 +166,7 @@ function preencheForm(tipo) {
     s += "<input type='checkbox' name='correta' value='r_1' />\n";
     s += "</div>\n";
     s += "</div>\n";
-    s += "<input id='r1' name='r1' type='text' class='form-control' required >";
+    s += "<input id='r1' name='r1' type='text' class='form-control'>";
     s += "</div>\n";
 
     s += "<div class='input-group mb-3'>\n";
@@ -148,7 +175,7 @@ function preencheForm(tipo) {
     s += "<input type='checkbox' name='correta' value='r_2' />\n";
     s += "</div>\n";
     s += "</div>\n";
-    s += "<input id='r2' name='r2' type='text' class='form-control' required >";
+    s += "<input id='r2' name='r2' type='text' class='form-control'>";
     s += "</div>\n";
     return s;
   }
