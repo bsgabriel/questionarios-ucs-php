@@ -12,7 +12,7 @@ function carregarMenu() {
   if (tipUsuario === "A") {
     $("#menuNav").append(createItem("Elaboradores", "elaboradores.html"));
   } else if (tipUsuario === "E") {
-    $("#menuNav").append(createItem("Criar questão", "#"));
+    $("#menuNav").append(createItem("Criar questão", "formQuestao.html"));
     $("#menuNav").append(createItem("Criar Questionários", "#"));
     $("#menuNav").append(createItem("Oferecer Questionário", "#"));
   } else {
