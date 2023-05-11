@@ -9,7 +9,7 @@ $(document).ready(() => {
       return;
     }
 
-    // TODO: fazer envio
+    enviarQuestionario();
   });
 });
 
@@ -167,4 +167,43 @@ function validarCampos() {
   }
 
   return true;
+}
+
+function enviarQuestionario() {
+  const data = {
+    codElaborador: getCookie("ID_USUARIO_AUTENTICADO"),
+    nome: $("#nome").val(),
+    descricao: $("#descricao").val(),
+    notaAprovacao: $("#notaAprovacao").val(),
+    questoes: gerarQuestoesValores(),
+  };
+
+  console.log(JSON.stringify(data));
+
+  $.post(
+    "formQuestionario.php",
+    data,
+    function (response) {
+      if (response.status === "success") {
+        window.location.href = "menuInicial.html";
+      } else {
+        exibirPopup(response.message);
+        console.log(response.stackTrace);
+      }
+    },
+    "json"
+  ).fail(function (xhr, status, error) {
+    console.error(error);
+  });
+}
+
+function gerarQuestoesValores() {
+  const arrQuestoesValores = [];
+  questoesEscolhidas.forEach((idQUestao) => {
+    arrQuestoesValores.push({
+      idQuestao: idQUestao,
+      valorQuestao: $("#valor_" + idQUestao).val(),
+    });
+  });
+  return arrQuestoesValores;
 }
