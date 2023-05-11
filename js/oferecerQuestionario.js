@@ -67,6 +67,8 @@ function enviarOferta() {
   if (!validarSelecao()) {
     return;
   }
+
+  salvarOferta();
 }
 
 function validarSelecao() {
@@ -81,4 +83,35 @@ function validarSelecao() {
   }
 
   return true;
+}
+
+function salvarOferta() {
+  const data = {
+    codQuestionario: $("input[name='codQuestionario']:checked").val(),
+    lstRespondentes: gerarListaRespondentes(),
+  };
+
+  console.log(JSON.stringify(data));
+
+  $.post(
+    "oferecerQuestionario.php",
+    data,
+    function (response) {
+      if (response.status === "success") {
+        window.location.href = "menuInicial.html";
+      } else {
+        exibirPopup(response.message);
+        console.log(response.stackTrace);
+      }
+    },
+    "json"
+  ).fail(function (xhr, status, error) {
+    console.error(error);
+  });
+}
+
+function gerarListaRespondentes() {
+  return $.map($("input[name='codRespondente']:checked"), (elem, idx) => {
+    return $(elem).val();
+  });
 }
