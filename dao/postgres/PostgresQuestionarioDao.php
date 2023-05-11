@@ -100,7 +100,7 @@ class PostgresQuestionarioDao extends DAO implements QuestionarioDao
             //Busca as questões do questionário através do PostgresQuestionarioQuestaoDao.php
             $questoes = $questionarioQuestaoDAO->buscarQuestoesQuestionario($row['id']);
             $elaborador = new Elaborador($row['id_elaborador'], $row['login'], $row['senha'], $row['usuario_nome'], $row['email'], $row['instituicao']);
-            $questionario = new Questionario($row['id'], $row['questionario_nome'], $row['descricao'], $row['dataCriacao'], $row['notaAprovacao'], $elaborador, $questoes);
+            $questionario = new Questionario($row['id'], $row['questionario_nome'], $row['descricao'], $row['datacriacao'], $row['notaaprovacao'], $elaborador, $questoes);
 
             $questionarios[] = $questionario;
         }

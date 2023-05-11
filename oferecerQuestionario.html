@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Oferecer Questionário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <ul class="navbar-nav" id="menuNav"></ul>
+    </nav>
+    <div class="container mt-5 text-center">
+      <h1>Oferecer Questionário</h1>
+      <table class="table table-hover text-center" id="tabelaQuestionarios">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Nota de Aprovação</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <table class="table table-hover text-center" id="tabelaRespondentes">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nome de usuário</th>
+            <th>Nome</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-primary" onclick="enviarOferta()">Oferecer</button>
+    </div>
+    <div id="janelaModal" class="modal fade">
+      <div class="modal-dialog modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-body mdl-content">
+            <p class="mdl-text-justified" id="mdlDescricao"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/menuNav.js"></script>
+    <script type="text/javascript" src="js/oferecerQuestionario.js"></script>
+  </body>
+</html>
