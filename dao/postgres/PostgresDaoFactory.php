@@ -7,6 +7,7 @@ include_once('PostgresElaboradorDao.php');
 include_once('PostgresRespondenteDao.php');
 include_once('PostgresQuestionarioDao.php');
 include_once('PostgresQuestionarioQuestaoDao.php');
+include_once('PostgresOfertaDao.php');
 
 class PostgresDaoFactory extends DaoFactory
 {
@@ -62,5 +63,11 @@ class PostgresDaoFactory extends DaoFactory
     {
         return new PostgresQuestionarioDao($this->getConnection());
     }
+
+    public function getOfertaDao()
+    {
+        return new PostgresOfertaDao($this->getConnection());
+    }
+
 }
 ?>

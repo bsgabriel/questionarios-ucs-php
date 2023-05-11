@@ -14,7 +14,7 @@ function carregarMenu() {
   } else if (tipUsuario === "E") {
     $("#menuNav").append(createItem("Criar questão", "formQuestao.html"));
     $("#menuNav").append(createItem("Criar Questionários", "formQuestionario.html"));
-    $("#menuNav").append(createItem("Oferecer Questionário", "#"));
+    $("#menuNav").append(createItem("Oferecer Questionário", "oferecerQuestionario.html"));
   } else {
     $("#menuNav").append(createItem("Responder Questionário", "#"));
     $("#menuNav").append(createItem("Editar Conta", "formUsuario.html?tipoUsuario=R&codUsuario=" + idUsuario));
