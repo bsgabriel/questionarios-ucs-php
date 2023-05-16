@@ -4,7 +4,7 @@ $(document).ready(() => {
 });
 
 function carregarQuestionarios() {
-  $.get("buscarQuestionarios.php", (data) => {
+  $.get("../server/buscarQuestionarios.php", (data) => {
     const questionarios = JSON.parse(data);
     questionarios.forEach((questionario) => {
       criarLinhaQuestionario(questionario);
@@ -13,7 +13,7 @@ function carregarQuestionarios() {
 }
 
 function carregarRespondentes() {
-  $.get("buscarRespondentes.php", (data) => {
+  $.get("../server/buscarRespondentes.php", (data) => {
     const respondentes = JSON.parse(data);
     respondentes.forEach((respondente) => {
       criarLinhaRespondente(respondente);
@@ -94,11 +94,11 @@ function salvarOferta() {
   console.log(JSON.stringify(data));
 
   $.post(
-    "oferecerQuestionario.php",
+    "../server/oferecerQuestionario.php",
     data,
     function (response) {
       if (response.status === "success") {
-        window.location.href = "menuInicial.html";
+        window.location.href = "menuInicial.php";
       } else {
         exibirPopup(response.message);
         console.log(response.stackTrace);

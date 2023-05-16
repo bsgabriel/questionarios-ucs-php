@@ -23,6 +23,7 @@ function exibirPopup(message) {
 }
 
 function getCookie(cookieName) {
+
   const cookie = {};
   document.cookie.split(";").forEach((element) => {
     const [key, value] = element.split("=");

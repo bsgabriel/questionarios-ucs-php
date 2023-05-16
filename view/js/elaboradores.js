@@ -3,7 +3,7 @@ $(document).ready(() => {
 });
 
 function carregarElaboradores() {
-  $.get("buscarElaboradores.php", (data) => {
+  $.get("../server/buscarElaboradores.php", (data) => {
     const elaboradores = JSON.parse(data);
     elaboradores.forEach((elaborador) => {
       criarLinha(elaborador);
@@ -15,9 +15,9 @@ function pesquisarElaboradores() {
   $("tbody").empty();
   let data;
   data = {
-    pesquisa : $("#pesquisa").val()
+    pesquisa: $("#pesquisa").val(),
   };
-  $.get("filtrarElaboradores.php", data, (data) => {
+  $.get("../server/filtrarElaboradores.php", data, (data) => {
     const elaboradores = JSON.parse(data);
     elaboradores.forEach((elaborador) => {
       criarLinha(elaborador);
@@ -48,7 +48,7 @@ function criarLinha(elaborador) {
 }
 
 function createLinkExclusao(id) {
-  const link = createLink("Excluir", "excluirUsuario.php?id=" + id);
+  const link = createLink("Excluir", "../server/excluirUsuario.php?id=" + id + "&redirect=../view/elaboradores.php");
   link.onclick = (event) => {
     if (!confirm("Confirmar exclusão?")) {
       event.preventDefault();
@@ -60,7 +60,7 @@ function createLinkExclusao(id) {
 }
 
 function createLinkEdicao(id) {
-  const link = createLink("Editar", "formUsuario.html?tipoUsuario=E&codUsuario="+id);
+  const link = createLink("Editar", "formUsuario.php?tipoUsuario=E&codUsuario=" + id + "&redirect=../view/elaboradores.php");
   link.classList.add("btn");
   link.classList.add("btn-secondary");
   return link;

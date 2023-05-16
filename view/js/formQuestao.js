@@ -26,12 +26,12 @@ function cadastrarQuestao() {
   // console.log(JSON.stringify(data));
 
   $.post(
-    "formQuestao.php",
+    "../server/formQuestao.php",
     data,
     function (response) {
       if (response.status === "success") {
         exibirPopup(response.message);
-        window.location.href = "menuInicial.html";
+        window.location.href = "menuInicial.php";
       } else {
         exibirPopup(response.message);
         console.log(response.stackTrace);
