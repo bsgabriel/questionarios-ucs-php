@@ -22,7 +22,14 @@
       <ul class="navbar-nav" id="menuNav"></ul>
     </nav>
     <section class="container">
-      <div class="container">
+      <div class="container mt-5">
+        <div class="input-group mb-3">
+          <input id="pesquisa" type="text" class="form=control pr-5" placeholder="Nome ou Email">
+          <div class="input-group-append">
+            <button id="btnPesquisa" class="btn btn-primary" onclick="pesquisarElaboradores()"><i class="material-icons">search</i></button>
+          </div>
+        </div>
+        <br>
         <div class="table-responsive">
           <table class="table table-sm" id="tabelaElaboradores">
             <thead>
@@ -37,16 +44,6 @@
             </thead>
             <tbody></tbody>
           </table>
-          <nav aria-label="Navegação" id="pnlNavegacao">
-            <ul class="pagination justify-content-end">
-              <li class="page-item">
-                <button class="page-link" href="#" id="btnVoltar">Voltar</button>
-              </li>
-              <li class="page-item">
-                <button class="page-link" href="#" id="btnAvancar">Avançar</button>
-              </li>
-            </ul>
-          </nav>
           <a class="btn btn-primary justify-content-end" id="btnNovoElaborador" href="formUsuario.html?tipoUsuario=E">Novo Elaborador</a>
         </div>
       </div>

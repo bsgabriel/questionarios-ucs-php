@@ -11,6 +11,20 @@ function carregarElaboradores() {
   });
 }
 
+function pesquisarElaboradores() {
+  $("tbody").empty();
+  let data;
+  data = {
+    pesquisa : $("#pesquisa").val()
+  };
+  $.get("filtrarElaboradores.php", data, (data) => {
+    const elaboradores = JSON.parse(data);
+    elaboradores.forEach((elaborador) => {
+      criarLinha(elaborador);
+    });
+  });
+}
+
 function criarLinha(elaborador) {
   const table = document.getElementById("tabelaElaboradores");
   const row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
@@ -34,17 +48,21 @@ function criarLinha(elaborador) {
 }
 
 function createLinkExclusao(id) {
-  const link = createLink("X", "excluirUsuario.php?id=" + id);
+  const link = createLink("Excluir", "excluirUsuario.php?id=" + id);
   link.onclick = (event) => {
     if (!confirm("Confirmar exclusão?")) {
       event.preventDefault();
     }
   };
+  link.classList.add("btn");
+  link.classList.add("btn-danger");
   return link;
 }
 
 function createLinkEdicao(id) {
-  const link = createLink("E", "formUsuario.html?tipoUsuario=E&codUsuario="+id);
+  const link = createLink("Editar", "formUsuario.html?tipoUsuario=E&codUsuario="+id);
+  link.classList.add("btn");
+  link.classList.add("btn-secondary");
   return link;
 }
 

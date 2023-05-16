@@ -65,5 +65,27 @@ class PostgresElaboradorDao extends PostgresUsuarioDao
 
         return false;
     }
+
+    public function buscarPorNomeEmail($pesquisa){
+        $pesquisa = "'%" . $pesquisa . "%'";
+        $elaboradores = array();
+
+        $query = "SELECT
+                    id, login, senha, nome, email, instituicao
+                FROM
+                    " . $this->table_name . 
+                    " WHERE tipo = 'E' AND " .
+                    "(nome LIKE " . $pesquisa . " OR email LIKE " . $pesquisa . ")  ORDER BY id ASC";
+     
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($row);
+            $elaboradores[] = new Elaborador($id,$login,$senha,$nome,$email,$instituicao);
+        }
+        
+        return $elaboradores;
+    }
 }
 ?>
