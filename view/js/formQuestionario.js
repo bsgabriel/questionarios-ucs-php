@@ -14,7 +14,7 @@ $(document).ready(() => {
 });
 
 function buscarQuestoes() {
-  $.get("buscarQuestoes.php", (data) => {
+  $.get("../controller/buscarQuestoes.php", (data) => {
     const questoes = JSON.parse(data);
     questoes.forEach((questao) => {
       criarQuestaoDisponivel(questao);
@@ -181,11 +181,11 @@ function enviarQuestionario() {
   console.log(JSON.stringify(data));
 
   $.post(
-    "formQuestionario.php",
+    "../controller/cadastrarQuestionario.php",
     data,
     function (response) {
       if (response.status === "success") {
-        window.location.href = "menuInicial.html";
+        window.location.href = "menuInicial.php";
       } else {
         exibirPopup(response.message);
         console.log(response.stackTrace);

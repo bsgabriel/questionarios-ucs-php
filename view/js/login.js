@@ -24,13 +24,17 @@ function loginEvent() {
 
 function executarLogin(usuario, senha) {
   $.post(
-    "login.php",
+    "../controller/efetuarLogin.php",
     { login: usuario, senha: senha },
     function (response) {
       if (response.status === "success") {
-        window.location.href = "menuInicial.html";
+        window.location.href = "menuInicial.php";
       } else {
         exibirPopup(response.message);
+        console.error(response.message);
+        if (response.hasOwnProperty("stackTrace")) {
+          console.error(response.stackTrace);
+        }
       }
     },
     "json"

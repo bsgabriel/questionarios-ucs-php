@@ -1,12 +1,21 @@
-const tipoUsuario = getUrlParameter("tipoUsuario");
-const codUsuario = getUrlParameter("codUsuario");
+let tipoUsuario;
+let codUsuario;
+let redirect;
 
 $(document).ready(() => {
+  tipoUsuario = getUrlParameter("tipoUsuario");
+  codUsuario = getUrlParameter("codUsuario");
+
+  const urlRedirect = getUrlParameter("redirect");
+  redirect = !isEmpty(urlRedirect) ? urlRedirect : "menuInicial.php";
+
+  $("#lblTitulo").text(tipoUsuario === "E" ? "Elaborador" : "Respondente");
+
   // carrega o label do campo extra dependendo do tipo de usuário
   $("#lblCampoExtra").text(tipoUsuario === "E" ? "Instituição:" : "Telefone:");
 
   // carrega o texto do botão dependendo da ação a ser executada
-  $("#btnSalvarCadastro").text(isEmpty(codUsuario) ? "Salvar" : "Cadastrar");
+  $("#btnSalvarCadastro").text(!isEmpty(codUsuario) ? "Salvar" : "Cadastrar");
 
   if (!isEmpty(codUsuario)) {
     buscarUsuario();
@@ -47,15 +56,15 @@ function submitEvent() {
   }
 
   $.post(
-    "formUsuario.php",
+    "../controller/cadastrarUsuario.php",
     data,
     function (response) {
       exibirPopup(response.message);
       if (response.status === "success") {
         if (response.tipoCadastro === "Inserção" && tipoUsuario === "R") {
-          window.location.href = "login.html";
+          window.location.href = "login.php";
         } else {
-          window.location.href = "menuInicial.html";
+          window.location.href = redirect;
         }
       }
     },
@@ -66,7 +75,7 @@ function submitEvent() {
 }
 
 function buscarUsuario() {
-  $.get("buscarUsuario.php?codUsuario=" + codUsuario, (data) => {
+  $.get("../controller/buscarUsuario.php?codUsuario=" + codUsuario, (data) => {
     const usuario = JSON.parse(data);
     $("#login").val(usuario.login);
     $("#nome").val(usuario.nome);

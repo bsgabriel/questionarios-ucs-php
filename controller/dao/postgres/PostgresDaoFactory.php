@@ -1,13 +1,13 @@
 <?php
-include_once('dao/DaoFactory.php');
-include_once('PostgresUsuarioDao.php');
-include_once('PostgresAlternativaDao.php');
-include_once('PostgresQuestaoDao.php');
-include_once('PostgresElaboradorDao.php');
-include_once('PostgresRespondenteDao.php');
-include_once('PostgresQuestionarioDao.php');
-include_once('PostgresQuestionarioQuestaoDao.php');
-include_once('PostgresOfertaDao.php');
+include_once(__DIR__ . '../DaoFactory.php');
+include_once(__DIR__ . '/PostgresUsuarioDao.php');
+include_once(__DIR__ . '/PostgresAlternativaDao.php');
+include_once(__DIR__ . '/PostgresQuestaoDao.php');
+include_once(__DIR__ . '/PostgresElaboradorDao.php');
+include_once(__DIR__ . '/PostgresRespondenteDao.php');
+include_once(__DIR__ . '/PostgresQuestionarioDao.php');
+include_once(__DIR__ . '/PostgresQuestionarioQuestaoDao.php');
+include_once(__DIR__ . '/PostgresOfertaDao.php');
 
 class PostgresDaoFactory extends DaoFactory
 {
@@ -70,4 +70,5 @@ class PostgresDaoFactory extends DaoFactory
     }
 
 }
+
 ?>
