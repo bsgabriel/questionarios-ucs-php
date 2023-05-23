@@ -14,7 +14,7 @@ $(document).ready(() => {
 });
 
 function buscarQuestoes() {
-  $.get("../server/buscarQuestoes.php", (data) => {
+  $.get("../controller/buscarQuestoes.php", (data) => {
     const questoes = JSON.parse(data);
     questoes.forEach((questao) => {
       criarQuestaoDisponivel(questao);
@@ -181,7 +181,7 @@ function enviarQuestionario() {
   console.log(JSON.stringify(data));
 
   $.post(
-    "../server/formQuestionario.php",
+    "../controller/formQuestionario.php",
     data,
     function (response) {
       if (response.status === "success") {

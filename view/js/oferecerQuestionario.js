@@ -4,7 +4,7 @@ $(document).ready(() => {
 });
 
 function carregarQuestionarios() {
-  $.get("../server/buscarQuestionarios.php", (data) => {
+  $.get("../controller/buscarQuestionarios.php", (data) => {
     const questionarios = JSON.parse(data);
     questionarios.forEach((questionario) => {
       criarLinhaQuestionario(questionario);
@@ -13,7 +13,7 @@ function carregarQuestionarios() {
 }
 
 function carregarRespondentes() {
-  $.get("../server/buscarRespondentes.php", (data) => {
+  $.get("../controller/buscarRespondentes.php", (data) => {
     const respondentes = JSON.parse(data);
     respondentes.forEach((respondente) => {
       criarLinhaRespondente(respondente);
@@ -94,7 +94,7 @@ function salvarOferta() {
   console.log(JSON.stringify(data));
 
   $.post(
-    "../server/oferecerQuestionario.php",
+    "../controller/oferecerQuestionario.php",
     data,
     function (response) {
       if (response.status === "success") {

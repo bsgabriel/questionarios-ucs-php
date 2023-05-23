@@ -3,7 +3,7 @@ $(document).ready(() => {
 });
 
 function carregarElaboradores() {
-  $.get("../server/buscarElaboradores.php", (data) => {
+  $.get("../controller/buscarElaboradores.php", (data) => {
     const elaboradores = JSON.parse(data);
     elaboradores.forEach((elaborador) => {
       criarLinha(elaborador);
@@ -17,7 +17,7 @@ function pesquisarElaboradores() {
   data = {
     pesquisa: $("#pesquisa").val(),
   };
-  $.get("../server/filtrarElaboradores.php", data, (data) => {
+  $.get("../controller/filtrarElaboradores.php", data, (data) => {
     const elaboradores = JSON.parse(data);
     elaboradores.forEach((elaborador) => {
       criarLinha(elaborador);
@@ -48,7 +48,7 @@ function criarLinha(elaborador) {
 }
 
 function createLinkExclusao(id) {
-  const link = createLink("Excluir", "../server/excluirUsuario.php?id=" + id + "&redirect=../view/elaboradores.php");
+  const link = createLink("Excluir", "../controller/excluirUsuario.php?id=" + id + "&redirect=../view/elaboradores.php");
   link.onclick = (event) => {
     if (!confirm("Confirmar exclusão?")) {
       event.preventDefault();

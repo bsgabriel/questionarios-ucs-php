@@ -56,7 +56,7 @@ function submitEvent() {
   }
 
   $.post(
-    "../server/formUsuario.php",
+    "../controller/formUsuario.php",
     data,
     function (response) {
       exibirPopup(response.message);
@@ -75,7 +75,7 @@ function submitEvent() {
 }
 
 function buscarUsuario() {
-  $.get("../server/buscarUsuario.php?codUsuario=" + codUsuario, (data) => {
+  $.get("../controller/buscarUsuario.php?codUsuario=" + codUsuario, (data) => {
     const usuario = JSON.parse(data);
     $("#login").val(usuario.login);
     $("#nome").val(usuario.nome);
