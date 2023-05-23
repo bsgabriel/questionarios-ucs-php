@@ -24,7 +24,7 @@ function loginEvent() {
 
 function executarLogin(usuario, senha) {
   $.post(
-    "../controller/login.php",
+    "../controller/efetuarLogin.php",
     { login: usuario, senha: senha },
     function (response) {
       if (response.status === "success") {
