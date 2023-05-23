@@ -1,6 +1,5 @@
 <?php
 include_once("components/cabecalho.php");
-include_once(__DIR__ . "server/login.php");
 ?>
 
 <section class="container mt-5 text-center">
