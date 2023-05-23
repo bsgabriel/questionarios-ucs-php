@@ -94,7 +94,7 @@ function salvarOferta() {
   console.log(JSON.stringify(data));
 
   $.post(
-    "../controller/oferecerQuestionario.php",
+    "../controller/gravarOfertaQuestionario.php",
     data,
     function (response) {
       if (response.status === "success") {
