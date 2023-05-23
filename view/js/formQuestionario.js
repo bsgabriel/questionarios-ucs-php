@@ -181,7 +181,7 @@ function enviarQuestionario() {
   console.log(JSON.stringify(data));
 
   $.post(
-    "../controller/formQuestionario.php",
+    "../controller/cadastrarQuestionario.php",
     data,
     function (response) {
       if (response.status === "success") {
