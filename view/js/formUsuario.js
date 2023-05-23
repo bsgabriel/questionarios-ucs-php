@@ -56,7 +56,7 @@ function submitEvent() {
   }
 
   $.post(
-    "../controller/formUsuario.php",
+    "../controller/cadastrarUsuario.php",
     data,
     function (response) {
       exibirPopup(response.message);
