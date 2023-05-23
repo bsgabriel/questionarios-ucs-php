@@ -26,7 +26,7 @@ function cadastrarQuestao() {
   // console.log(JSON.stringify(data));
 
   $.post(
-    "../controller/formQuestao.php",
+    "../controller/cadastrarQuestao.php",
     data,
     function (response) {
       if (response.status === "success") {
