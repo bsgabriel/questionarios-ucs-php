@@ -2,7 +2,7 @@
 
 include_once('dao/AlternativaDAO.php');
 include_once('dao/DAO.php');
-include_once('../model/Alternativa.php');
+include_once('../entidades/Alternativa.php');
 
 class PostgresAlternativaDao extends DAO implements AlternativaDao
 {

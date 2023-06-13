@@ -1,13 +1,13 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
-include_once(__DIR__ . '/model/Elaborador.php');
-include_once(__DIR__ . '/model/Respondente.php');
-include_once(__DIR__ . '/model/Administrador.php');
-include_once(__DIR__ . '/model/Questao.php');
-include_once(__DIR__ . '/model/Alternativa.php');
-include_once(__DIR__ . '/model/Questionario.php');
-include_once(__DIR__ . '/model/QuestionarioQuestao.php');
-include_once(__DIR__ . '/model/Oferta.php');
+include_once(__DIR__ . '/entidades/Elaborador.php');
+include_once(__DIR__ . '/entidades/Respondente.php');
+include_once(__DIR__ . '/entidades/Administrador.php');
+include_once(__DIR__ . '/entidades/Questao.php');
+include_once(__DIR__ . '/entidades/Alternativa.php');
+include_once(__DIR__ . '/entidades/Questionario.php');
+include_once(__DIR__ . '/entidades/QuestionarioQuestao.php');
+include_once(__DIR__ . '/entidades/Oferta.php');
 include_once(__DIR__ . '/dao/UsuarioDAO.php');
 include_once(__DIR__ . '/dao/QuestionarioDAO.php');
 include_once(__DIR__ . '/dao/QuestionarioQuestaoDAO.php');

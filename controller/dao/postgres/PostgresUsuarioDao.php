@@ -2,9 +2,9 @@
 
 include_once('UsuarioDao.php');
 include_once('dao/DAO.php');
-include_once('../model/Elaborador.php');
-include_once('../model/Respondente.php');
-include_once('../model/Administrador.php');
+include_once('../entidades/Elaborador.php');
+include_once('../entidades/Respondente.php');
+include_once('../entidades/Administrador.php');
 
 class PostgresUsuarioDao extends DAO implements UsuarioDao
 {

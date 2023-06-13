@@ -2,10 +2,10 @@
 
 include_once('OfertaDAO.php');
 include_once('dao/DAO.php');
-include_once('../model/Oferta.php');
-include_once('../model/Questionario.php');
-include_once('../model/Respondente.php');
-include_once('../model/Elaborador.php');
+include_once('../entidades/Oferta.php');
+include_once('../entidades/Questionario.php');
+include_once('../entidades/Respondente.php');
+include_once('../entidades/Elaborador.php');
 
 class PostgresOfertaDao extends DAO implements OfertaDAO
 {
