@@ -11,8 +11,8 @@ $extra = isset($_POST["extra"]) ? addslashes(trim($_POST["extra"])) : FALSE;
 include_once "fachada.php";
 
 /* ------ verificação de nome de usuário já existente ------ */
-$usuarioExistente = $factory->getUsuarioDao()->buscarPorLogin($login);  
-var_dump($usuarioExistente);
+$usuarioExistente = $factory->getUsuarioDao()->buscarPorLogin($login);
+
 if (!is_null($usuarioExistente)) {
 
   // se for inserção, não há ID para comparar
@@ -47,7 +47,7 @@ if ($codUsuario) {
     $usuario = new Respondente($codUsuario, $login, $senha, $nome, $email, $extra);
 
   $factory->getUsuarioDao()->alterar($usuario);
-  
+
   $response = array(
     "status" => "success",
     "message" => "Alteração realizada com sucesso!",

@@ -1,5 +1,4 @@
 <?php
-
 include_once('UsuarioDao.php');
 include_once('dao/DAO.php');
 include_once('../entidades/Elaborador.php');
@@ -8,6 +7,7 @@ include_once('../entidades/Administrador.php');
 
 class PostgresUsuarioDao extends DAO implements UsuarioDao
 {
+    /* colunas da tabela */
     protected $table_name = 'usuarios';
     private $col_id = 'id';
     private $col_login = 'login';
@@ -17,6 +17,8 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
     private $col_instituicao = 'instituicao';
     private $col_telefone = 'telefone';
     private $col_tipo = 'tipo';
+
+    /* parâmetros usados em statements */
     private $param_id = ':id';
     private $param_login = ':login';
     private $param_senha = ':senha';
@@ -139,14 +141,14 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
     public function alterar($usuario)
     {
         $query = "update " . $this->table_name . " set "
-            . $this->col_login . " = " . $this->param_login . ", "
-            . $this->col_senha . " = " . $this->param_senha . ", "
-            . $this->col_nome . " = " . $this->param_nome . ", "
-            . $this->col_email . " = " . $this->param_email . ", "
-            . $this->col_tipo . " = " . $this->param_tipo . ", "
-            . $this->col_instituicao . " = " . $this->param_instituicao . ", "
-            . $this->col_telefone . " = " . $this->param_telefone . " "
-            . "where " . $this->param_id . " = " . $this->param_id;
+        . $this->col_login . " = " . $this->param_login . ", "
+        . $this->col_senha . " = " . $this->param_senha . ", "
+        . $this->col_nome . " = " . $this->param_nome . ", "
+        . $this->col_email . " = " . $this->param_email . ", "
+        . $this->col_tipo . " = " . $this->param_tipo . ", "
+        . $this->col_instituicao . " = " . $this->param_instituicao . ", "
+        . $this->col_telefone . " = " . $this->param_telefone . " "
+        . "where " . $this->col_id . " = " . $this->param_id;
 
         $instituicao = null;
         $telefone = null;
@@ -164,6 +166,7 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
         $stmt->bindParam($this->param_tipo, $usuario->getTipo());
         $stmt->bindParam($this->param_instituicao, $instituicao);
         $stmt->bindParam($this->param_telefone, $telefone);
+        $stmt->bindParam($this->param_id, $usuario->getId());
         $stmt->execute();
     }
 
