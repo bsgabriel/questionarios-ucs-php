@@ -118,8 +118,6 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
 
         $factory = new PostgresDaofactory();
         $questionarioQuestaoDAO = $factory->getQuestionarioQuestaoDao();
-        $elaboradorDAO = $factory->getElaboradorDao();
-        $respondenteDAO = $factory->getRespondenteDao();
 
         $questoes = [];
         $oferta = null;
@@ -128,8 +126,8 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
         if ($row) {
             //Busca as questões do questionário através do PostgresQuestionarioQuestaoDao.php
             $questoes = $questionarioQuestaoDAO->buscarQuestoesQuestionario($row['id_questionario']);
-            $elaborador = $elaboradorDAO->buscarPorId($row['id_elaborador']);
-            $respondente = $respondenteDAO->buscarPorId($row['id_respondente']);
+            $elaborador = $factory->getUsuarioDao()->buscarPorId($row['id_elaborador']);
+            $respondente = $factory->getUsuarioDao()->buscarPorId($row['id_respondente']);
 
             $questionario = new Questionario($row['id_questionario'], $row['questionario_nome'], $row['descricao'], $row['dataCriacao'], $row['notaAprovacao'], $elaborador, $questoes);
             $oferta = new Oferta($row['id'], $row['data_oferta'], $questionario, $respondente);

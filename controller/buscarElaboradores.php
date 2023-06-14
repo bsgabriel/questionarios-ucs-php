@@ -1,7 +1,7 @@
 <?php
 try {
  include_once("fachada.php");
- $elaboradores = $factory->getElaboradorDao()->buscarTodos();
+ $elaboradores = $factory->getUsuarioDao()->buscarElaboradores();
 
  $list = array();
  foreach ($elaboradores as $elaborador) {

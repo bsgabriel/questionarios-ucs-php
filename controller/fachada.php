@@ -11,8 +11,6 @@ include_once(__DIR__ . '/entidades/Oferta.php');
 include_once(__DIR__ . '/dao/UsuarioDAO.php');
 include_once(__DIR__ . '/dao/QuestionarioDAO.php');
 include_once(__DIR__ . '/dao/QuestionarioQuestaoDAO.php');
-include_once(__DIR__ . '/dao/ElaboradorDAO.php');
-include_once(__DIR__ . '/dao/RespondenteDAO.php');
 include_once(__DIR__ . '/dao/DaoFactory.php');
 include_once(__DIR__ . '/dao/OfertaDAO.php');
 include_once(__DIR__ . '/dao/postgres/PostgresDaoFactory.php');

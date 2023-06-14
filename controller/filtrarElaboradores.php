@@ -2,7 +2,7 @@
 $pesquisa = $_GET["pesquisa"];
 
 include_once("fachada.php");
-$elaboradores = $factory->getElaboradorDao()->buscarPorNomeEmail($pesquisa);
+$elaboradores = $factory->getUsuarioDao()->buscarPorNomeEmail($pesquisa);
 
 $list = array();
 foreach ($elaboradores as $elaborador) {

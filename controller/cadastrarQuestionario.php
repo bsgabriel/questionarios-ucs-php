@@ -9,7 +9,7 @@ $questoes = isset($_POST["questoes"]) ? $_POST["questoes"] : FALSE;
 
 $elaborador = null;
 try {
- $elaborador = $factory->getElaboradorDao()->buscarPorId($codElaborador);
+ $elaborador = $factory->getUsuarioDao()->buscarPorId($codElaborador);
 } catch (\Throwable $th) {
  $response = array(
   "status" => "error",

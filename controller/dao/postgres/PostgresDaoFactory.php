@@ -3,8 +3,6 @@ include_once(__DIR__ . '../DaoFactory.php');
 include_once(__DIR__ . '/PostgresUsuarioDao.php');
 include_once(__DIR__ . '/PostgresAlternativaDao.php');
 include_once(__DIR__ . '/PostgresQuestaoDao.php');
-include_once(__DIR__ . '/PostgresElaboradorDao.php');
-include_once(__DIR__ . '/PostgresRespondenteDao.php');
 include_once(__DIR__ . '/PostgresQuestionarioDao.php');
 include_once(__DIR__ . '/PostgresQuestionarioQuestaoDao.php');
 include_once(__DIR__ . '/PostgresOfertaDao.php');
@@ -27,16 +25,6 @@ class PostgresDaoFactory extends DaoFactory
             echo "Connection error: " . $exception->getMessage();
         }
         return $this->conn;
-    }
-
-    public function getElaboradorDao()
-    {
-        return new PostgresElaboradorDao($this->getConnection());
-    }
-
-    public function getRespondenteDao()
-    {
-        return new PostgresRespondenteDao($this->getConnection());
     }
 
     public function getUsuarioDao()

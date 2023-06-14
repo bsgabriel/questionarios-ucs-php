@@ -20,7 +20,7 @@ try {
 $respondentes = array();
 try {
  foreach ($lstCodRespondentes as $codRespondente) {
-  $respondentes[] = $factory->getRespondenteDao()->buscarPorId($codRespondente);
+  $respondentes[] = $factory->getUsuarioDao()->buscarPorId($codRespondente);
  }
 } catch (\Throwable $th) {
  $response = array(
