@@ -1,5 +1,6 @@
 <?php
-abstract class Usuario
+include_once("JsonObject.php");
+abstract class Usuario implements JsonObject
 {
 
   protected $id;

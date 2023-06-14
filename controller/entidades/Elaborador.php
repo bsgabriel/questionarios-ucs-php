@@ -22,6 +22,23 @@ class Elaborador extends Usuario
     $this->instituicao = $instituicao;
   }
 
+  public function fromJson($json)
+  {
+    // TODO: implementar
+  }
+
+  public function toJson(): array
+  {
+    return array(
+      "id" => $this->getId(),
+      "tipo" => $this->getTipo(),
+      "nome" => $this->getNome(),
+      "login" => $this->getLogin(),
+      "senha" => $this->getSenha(),
+      "email" => $this->getEmail(),
+      "campoExtra" => $this->getInstituicao()
+    );
+  }
 }
 
 ?>

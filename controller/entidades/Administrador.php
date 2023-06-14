@@ -7,6 +7,27 @@ class Administrador extends Usuario
   {
     parent::__construct($id, $login, $senha, $nome, $email, 'A');
   }
+
+  public function fromJson($json)
+  {
+    // TODO: implementar
+  }
+
+  public function toJson(): array
+  {
+    // TODO: testar
+    return array(
+      "id" => $this->getId(),
+      "tipo" => $this->getTipo(),
+      "nome" => $this->getNome(),
+      "login" => $this->getLogin(),
+      "senha" => $this->getSenha(),
+      "email" => $this->getEmail(),
+      "campoExtra" => ""
+    );
+    // $json = json_encode($arr);
+    // return !$json ? "" : $json;
+  }
 }
 
 ?>
