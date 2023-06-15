@@ -8,7 +8,7 @@ include_once('../entidades/Administrador.php');
 class PostgresUsuarioDao extends DAO implements UsuarioDao
 {
     /* colunas da tabela */
-    protected $table_name = 'usuarios';
+    private $table_name = 'usuarios';
     private $col_id = 'id';
     private $col_login = 'login';
     private $col_senha = 'senha';
@@ -141,14 +141,14 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
     public function alterar($usuario)
     {
         $query = "update " . $this->table_name . " set "
-        . $this->col_login . " = " . $this->param_login . ", "
-        . $this->col_senha . " = " . $this->param_senha . ", "
-        . $this->col_nome . " = " . $this->param_nome . ", "
-        . $this->col_email . " = " . $this->param_email . ", "
-        . $this->col_tipo . " = " . $this->param_tipo . ", "
-        . $this->col_instituicao . " = " . $this->param_instituicao . ", "
-        . $this->col_telefone . " = " . $this->param_telefone . " "
-        . "where " . $this->col_id . " = " . $this->param_id;
+            . $this->col_login . " = " . $this->param_login . ", "
+            . $this->col_senha . " = " . $this->param_senha . ", "
+            . $this->col_nome . " = " . $this->param_nome . ", "
+            . $this->col_email . " = " . $this->param_email . ", "
+            . $this->col_tipo . " = " . $this->param_tipo . ", "
+            . $this->col_instituicao . " = " . $this->param_instituicao . ", "
+            . $this->col_telefone . " = " . $this->param_telefone . " "
+            . "where " . $this->col_id . " = " . $this->param_id;
 
         $instituicao = null;
         $telefone = null;
@@ -253,28 +253,48 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
         return $usuario;
     }
 
-    public function buscarPorNomeEmail($pesquisa)
+    public function buscarPorNomeEmail($pesquisa, $tipo)
     {
-        // TODO: refatorar
         $pesquisa = "'%" . $pesquisa . "%'";
-        $elaboradores = array();
 
-        $query = "SELECT
-                    id, login, senha, nome, email, instituicao
-                FROM
-                    " . $this->table_name .
-            " WHERE tipo = 'E' AND " .
-            "(nome LIKE " . $pesquisa . " OR email LIKE " . $pesquisa . ")  ORDER BY id ASC";
+        $query = "select * from " . $this->table_name
+            . " where (" . $this->col_nome . " like " . $pesquisa
+            . " or " . $this->col_email . " like " . $pesquisa . ")";
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            $elaboradores[] = new Elaborador($id, $login, $senha, $nome, $email, $instituicao);
+        if (!is_null($tipo)) {
+            $query = $query . " and " . $this->col_tipo . " = " . $this->param_tipo;
         }
 
-        return $elaboradores;
+        $query = $query . " order by " . $this->col_login;
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!is_null($tipo)) {
+            $stmt->bindParam($this->param_tipo, $tipo);
+        }
+
+        $stmt->execute();
+
+        $usuarios = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $id = $row[$this->col_id];
+            $login = $row[$this->col_login];
+            $senha = $row[$this->col_senha];
+            $nome = $row[$this->col_nome];
+            $email = $row[$this->col_email];
+            $instituicao = $row[$this->col_instituicao];
+            $telefone = $row[$this->col_telefone];
+            $tipo = $row[$this->col_tipo];
+
+            if ($tipo == 'E') {
+                $usuarios[] = new Elaborador($id, $login, $senha, $nome, $email, $instituicao);
+            } else if ($tipo == 'R') {
+                $usuarios[] = new Respondente($id, $login, $senha, $nome, $email, $telefone);
+            }
+        }
+
+        return $usuarios;
     }
 }
 
