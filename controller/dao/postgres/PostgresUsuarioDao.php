@@ -30,7 +30,7 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
 
     public function buscarTodos()
     {
-        $query = "select * from " . $this->table_name . " order by " . $this->col_id;
+        $query = "select * from " . $this->table_name . " order by " . $this->col_login;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
@@ -60,7 +60,7 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
     {
         $query = "select * from " . $this->table_name
             . " where " . $this->col_tipo . " = 'E'"
-            . " order by " . $this->col_id;
+            . " order by " . $this->col_login;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
@@ -82,7 +82,7 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
     {
         $query = "select * from " . $this->table_name
             . " where " . $this->col_tipo . " = 'R'"
-            . " order by " . $this->col_id;
+            . " order by " . $this->col_login;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
