@@ -12,6 +12,7 @@ include_once "fachada.php";
 
 /* ------ verificação de nome de usuário já existente ------ */
 $usuarioExistente = $factory->getUsuarioDao()->buscarPorLogin($login);
+
 if (!is_null($usuarioExistente)) {
 
   // se for inserção, não há ID para comparar
@@ -39,10 +40,13 @@ if (!is_null($usuarioExistente)) {
 
 /* ------ Alteração ------ */
 if ($codUsuario) {
+  $usuario = null;
   if (strcmp($tipoUsuario, "E") == 0)
-    $factory->getElaboradorDao()->alterar(new Elaborador($codUsuario, $login, $senha, $nome, $email, $extra));
+    $usuario = new Elaborador($codUsuario, $login, $senha, $nome, $email, $extra);
   else if (strcmp($tipoUsuario, "R") == 0)
-    $factory->getRespondenteDao()->alterar(new Respondente($codUsuario, $login, $senha, $nome, $email, $extra));
+    $usuario = new Respondente($codUsuario, $login, $senha, $nome, $email, $extra);
+
+  $factory->getUsuarioDao()->alterar($usuario);
 
   $response = array(
     "status" => "success",
@@ -54,10 +58,13 @@ if ($codUsuario) {
 }
 
 /* ----- Inserção ----- */
+$usuario = null;
 if (strcmp($tipoUsuario, "E") == 0)
-  $factory->getElaboradorDao()->inserir(new Elaborador(null, $login, $senha, $nome, $email, $extra));
+  $usuario = new Elaborador($codUsuario, $login, $senha, $nome, $email, $extra);
 else if (strcmp($tipoUsuario, "R") == 0)
-  $factory->getRespondenteDao()->inserir(new Respondente(null, $login, $senha, $nome, $email, $extra));
+  $usuario = new Respondente($codUsuario, $login, $senha, $nome, $email, $extra);
+
+$factory->getUsuarioDao()->inserir($usuario);
 
 $response = array(
   "status" => "success",

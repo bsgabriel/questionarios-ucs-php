@@ -21,6 +21,24 @@ class Respondente extends Usuario
     $this->telefone = $telefone;
   }
 
+  public function fromJson($json)
+  {
+    // TODO: implementar
+  }
+
+  public function toJson(): array
+  {
+    return array(
+      "id" => $this->getId(),
+      "tipo" => $this->getTipo(),
+      "nome" => $this->getNome(),
+      "login" => $this->getLogin(),
+      "senha" => $this->getSenha(),
+      "email" => $this->getEmail(),
+      "instituicao" => null,
+      "telefone" => $this->getTelefone()
+    );
+  }
 }
 
 ?>

@@ -1,8 +1,8 @@
 <?php
 include_once('QuestionarioQuestaoDAO.php');
 include_once('dao/DAO.php');
-include_once('../model/Questionario.php');
-include_once('../model/Questao.php');
+include_once('../entidades/Questionario.php');
+include_once('../entidades/Questao.php');
 
 class PostgresQuestionarioQuestaoDao extends DAO implements QuestionarioQuestaoDAO
 {

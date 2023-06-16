@@ -1,6 +1,6 @@
 <?php
 include_once("fachada.php");
-$respondentes = $factory->getRespondenteDao()->buscarTodos();
+$respondentes = $factory->getUsuarioDao()->buscarRespondentes();
 
 $list = array();
 foreach ($respondentes as $respondente) {
