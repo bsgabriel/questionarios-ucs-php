@@ -1,7 +1,18 @@
+//Variável que guarda o id do questionário escolhido
+var idQuest;
+const idTabelaRespondentes = "tblOfertaRespondentes";
+
 $(document).ready(() => {
+  defaultValues();
   carregarQuestionarios();
-  carregarRespondentes();
 });
+
+function defaultValues() {
+  $("#principal").empty();
+  $("h1").html("Questionários");
+  document.title = "Questionários";
+  idQuest = null;
+}
 
 function carregarQuestionarios() {
   $.get("../controller/buscarQuestionarios.php", (data) => {
@@ -21,29 +32,77 @@ function carregarRespondentes() {
   });
 }
 
+function selecionarQuestionario(idQuestionario) {
+  idQuest = idQuestionario;
+  $("#principal").empty();
+  $("h1").html("Oferecer para...");
+  document.title = "Oferecer para...";
+  criarTabelaRespondente();
+  carregarRespondentes();
+}
+
 function criarLinhaQuestionario(questionario) {
-  const table = document.getElementById("tabelaQuestionarios");
-  const row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
+  const linhaQuestionario = document.createElement("button");
+  linhaQuestionario.classList.add("list-group-item");
+  linhaQuestionario.classList.add("list-group-item-action");
+  linhaQuestionario.classList.add("list-group-item-light");
+  linhaQuestionario.value = questionario.id;
+  linhaQuestionario.textContent = questionario.nome;
+  linhaQuestionario.addEventListener("click", () => {
+    selecionarQuestionario(questionario.id);
+  });
+  $("#principal").append(linhaQuestionario);
+}
 
-  const colCheck = row.insertCell(0);
-  const colNome = row.insertCell(1);
-  const coldDescricao = row.insertCell(2);
-  const colNotaAprovacao = row.insertCell(3);
+function criarTabelaRespondente() {
+  const table = document.createElement("table");
+  const header = document.createElement("thead");
+  const row = document.createElement("tr");
+  const colNomeUsuario = document.createElement("td");
+  const colNome = document.createElement("td");
+  const colEmail = document.createElement("td");
+  const btnVoltar = document.createElement("button");
+  const btnEnviar = document.createElement("button");
 
-  const check = document.createElement("input");
-  check.setAttribute("type", "radio");
-  check.setAttribute("name", "codQuestionario");
-  check.setAttribute("value", questionario.id);
-  check.classList.add("form-check-input");
-  colCheck.appendChild(check);
+  table.id = idTabelaRespondentes;
+  table.classList.add("table");
+  table.classList.add("text-center");
+  header.classList.add("font-weight-bold");
 
-  colNome.innerHTML = questionario.nome;
-  coldDescricao.innerHTML = questionario.descricao;
-  colNotaAprovacao.innerHTML = questionario.notaAprovacao;
+  colNomeUsuario.textContent = "Nome de usuário";
+  colNome.textContent = "Nome";
+  colEmail.textContent = "Email";
+
+  btnVoltar.classList.add("btn");
+  btnVoltar.classList.add("btn-secondary");
+  btnVoltar.classList.add("mr-3");
+  btnVoltar.textContent = "Voltar";
+  btnVoltar.addEventListener("click", () => {
+    voltar();
+  });
+
+  btnEnviar.classList.add("btn");
+  btnEnviar.classList.add("btn-primary");
+  btnEnviar.textContent = "Oferecer";
+  btnEnviar.addEventListener("click", () => {
+    enviarOferta();
+  });
+
+  row.appendChild(document.createElement("td"));
+  row.appendChild(colNomeUsuario);
+  row.appendChild(colNome);
+  row.appendChild(colEmail);
+  header.appendChild(row);
+  table.appendChild(header);
+  table.appendChild(document.createElement("tbody"));
+
+  $("#principal").append(table);
+  $("#principal").append(btnVoltar);
+  $("#principal").append(btnEnviar);
 }
 
 function criarLinhaRespondente(respondente) {
-  const table = document.getElementById("tabelaRespondentes");
+  const table = document.getElementById("tblOfertaRespondentes");
   const row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
 
   const colCheck = row.insertCell(0);
@@ -63,16 +122,21 @@ function criarLinhaRespondente(respondente) {
   colEmail.innerHTML = respondente.email;
 }
 
+function voltar() {
+  defaultValues();
+  carregarQuestionarios();
+}
+
 function enviarOferta() {
   if (!validarSelecao()) {
+    console.log("n validou selecao");
     return;
   }
-
   salvarOferta();
 }
 
 function validarSelecao() {
-  if (!$("input[name='codQuestionario']:checked").val()) {
+  if (!Number.isInteger(idQuest)) {
     exibirPopup("Selecione um questionário");
     return false;
   }
@@ -87,7 +151,7 @@ function validarSelecao() {
 
 function salvarOferta() {
   const data = {
-    codQuestionario: $("input[name='codQuestionario']:checked").val(),
+    codQuestionario: idQuest,
     lstRespondentes: gerarListaRespondentes(),
   };
 
