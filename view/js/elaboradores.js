@@ -1,13 +1,21 @@
+let pgAtual = 0;
+
 $(document).ready(() => {
   carregarElaboradores();
 });
 
 function carregarElaboradores() {
-  $.get("../controller/buscarElaboradores.php", (data) => {
+  const url = "../controller/buscarElaboradores.php?start=" + pgAtual + "&limit=10";
+  $.get(url, (data) => {
     const elaboradores = JSON.parse(data);
     elaboradores.forEach((elaborador) => {
       criarLinha(elaborador);
     });
+
+    if (elaboradores.length <= 10) {
+      $("#paginacao").remove();
+    } else {
+    }
   });
 }
 

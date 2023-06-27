@@ -23,6 +23,9 @@ include_once("components/menuNav.php");
         </thead>
         <tbody></tbody>
       </table>
+      <?php
+      include_once("components/paginacao.php");
+      ?>
       <a class="btn btn-primary justify-content-end" id="btnNovoElaborador"
         href="formUsuario.php?tipoUsuario=E&redirect=../view/elaboradores.php">Novo elaborador</a>
     </div>

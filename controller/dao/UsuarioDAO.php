@@ -11,5 +11,6 @@ interface UsuarioDao
   public function buscarTodos();
   public function buscarElaboradores();
   public function buscarRespondentes();
+  public function buscarElaboradoresOffset(int $start, int $limit);
 }
 ?>
