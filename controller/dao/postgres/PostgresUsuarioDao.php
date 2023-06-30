@@ -307,6 +307,15 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
         }
         return $elaboradores;
     }
+
+    public function totalElaboradores()
+    {
+        $query = "select count(1) from " . $this->table_name
+        . " where tipo = 'E'";
+        $stmt = $this->conn->prepare($query);
+       $stmt->execute();
+       return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>

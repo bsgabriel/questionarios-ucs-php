@@ -1,22 +1,44 @@
-let pgAtual = 0;
-
 $(document).ready(() => {
-  carregarElaboradores();
+  carregarPaginacao();
+  carregarElaboradores(0);
 });
 
-function carregarElaboradores() {
-  const url = "../controller/buscarElaboradores.php?start=" + pgAtual + "&limit=10";
+function carregarElaboradores(pagina) {
+  $("tbody").empty();
+  const url = "../controller/buscarElaboradores.php?start=" + pagina + "&limit=10";
   $.get(url, (data) => {
     const elaboradores = JSON.parse(data);
     elaboradores.forEach((elaborador) => {
       criarLinha(elaborador);
     });
+  });
+}
 
-    if (elaboradores.length <= 10) {
-      $("#paginacao").remove();
+function carregarPaginacao() {
+  const url = "../controller/totalElaboradores.php";
+  $.get(url, (data) => {
+    const quantidade = JSON.parse(data).total;
+    if (quantidade > 10) {
+      criarBotoesPaginacao(quantidade);
     } else {
+      $("#paginacao").remove();
     }
   });
+}
+
+function criarBotoesPaginacao(qtdElaboradores) {
+  const qtdPaginas = Math.ceil(qtdElaboradores / 10);
+  const divPaginas = document.getElementById("paginacao");
+
+  for (let i = 1; i <= qtdPaginas; i++) {
+    const paginaElemento = document.createElement("li");
+    paginaElemento.innerText = i;
+    paginaElemento.classList.add("page-link");
+    paginaElemento.addEventListener("click", function () {
+      carregarElaboradores(i - 1);
+    });
+    divPaginas.appendChild(paginaElemento);
+  }
 }
 
 function pesquisarElaboradores() {
