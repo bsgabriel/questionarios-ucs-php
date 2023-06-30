@@ -35,7 +35,7 @@ function criarBotoesPaginacao(qtdElaboradores) {
     paginaElemento.innerText = i;
     paginaElemento.classList.add("page-link");
     paginaElemento.addEventListener("click", function () {
-      carregarElaboradores(i - 1);
+      carregarElaboradores((i - 1) * 10);
     });
     divPaginas.appendChild(paginaElemento);
   }
