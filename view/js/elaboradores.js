@@ -45,6 +45,10 @@ function criarBotoesPaginacao(qtdElaboradores) {
     });
     paginaElemento.append(link);
     divPaginas.appendChild(paginaElemento);
+
+    if (i == 1) {
+      paginaElemento.classList.add("active");
+    }
   }
 }
 
