@@ -32,11 +32,18 @@ function criarBotoesPaginacao(qtdElaboradores) {
 
   for (let i = 1; i <= qtdPaginas; i++) {
     const paginaElemento = document.createElement("li");
-    paginaElemento.innerText = i;
-    paginaElemento.classList.add("page-link");
+    const link = document.createElement("a");
+    link.innerText = i;
+    link.classList.add("page-link");
+    paginaElemento.classList.add("page-item");
     paginaElemento.addEventListener("click", function () {
       carregarElaboradores((i - 1) * 10);
+      $(".page-item").each(function (index, element) {
+        element.classList.remove("active");
+      });
+      paginaElemento.classList.add("active");
     });
+    paginaElemento.append(link);
     divPaginas.appendChild(paginaElemento);
   }
 }
