@@ -63,24 +63,7 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
 
     public function buscarRespondentes()
     {
-        $query = "select * from " . $this->table_name
-            . " where " . $this->col_tipo . " = 'R'"
-            . " order by " . $this->col_login;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        $respondentes = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            $id = $row[$this->col_id];
-            $login = $row[$this->col_login];
-            $senha = $row[$this->col_senha];
-            $nome = $row[$this->col_nome];
-            $email = $row[$this->col_email];
-            $telefone = $row[$this->col_telefone];
-            $respondentes[] = new Respondente($id, $login, $senha, $nome, $email, $telefone);
-        }
-        return $respondentes;
+        return $this->buscarRespondentesOffset(0, 0);
     }
 
     public function inserir($usuario)
@@ -308,13 +291,33 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
         return $elaboradores;
     }
 
-    public function totalElaboradores()
+    public function buscarRespondentesOffset(int $start, int $limit)
     {
-        $query = "select count(1) from " . $this->table_name
-        . " where tipo = 'E'";
+        $query = "select * from " . $this->table_name
+            . " where " . $this->col_tipo . " = 'R'"
+            . " order by " . $this->col_login;
+
+        if ($limit > 0) {
+            $query = $query . " "
+                . "offset " . $start . " "
+                . "limit " . $limit;
+        }
+
         $stmt = $this->conn->prepare($query);
-       $stmt->execute();
-       return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute();
+
+        $respondentes = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $id = $row[$this->col_id];
+            $login = $row[$this->col_login];
+            $senha = $row[$this->col_senha];
+            $nome = $row[$this->col_nome];
+            $email = $row[$this->col_email];
+            $telefone = $row[$this->col_telefone];
+            $respondentes[] = new Respondente($id, $login, $senha, $nome, $email, $telefone);
+        }
+        return $respondentes;
     }
 }
 
