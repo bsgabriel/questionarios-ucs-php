@@ -1,10 +1,26 @@
+//Variável que guarda o id do questionário escolhido
+var idQuest;
+const idTabelaRespondentes = "tblOfertaRespondentes";
+const respondentes = [];
+
 $(document).ready(() => {
-  carregarQuestionarios();
-  carregarRespondentes();
+  defaultValues();
+  carregarQuestionarios(0);
+  carregarPaginacao();
 });
 
-function carregarQuestionarios() {
-  $.get("../controller/buscarQuestionarios.php", (data) => {
+function defaultValues() {
+  $("#principal").empty();
+  $("#botoes").empty();
+  $("h1").html("Questionários");
+  document.title = "Questionários";
+  idQuest = null;
+  respondentes.length = 0;
+}
+
+function carregarQuestionarios(pagina) {
+  $("#principal").empty();
+  $.get("../controller/buscarQuestionarios.php?start=" + pagina + "&limit=10", (data) => {
     const questionarios = JSON.parse(data);
     questionarios.forEach((questionario) => {
       criarLinhaQuestionario(questionario);
@@ -12,8 +28,9 @@ function carregarQuestionarios() {
   });
 }
 
-function carregarRespondentes() {
-  $.get("../controller/buscarRespondentes.php", (data) => {
+function carregarRespondentes(pagina) {
+  $("tbody").empty();
+  $.get("../controller/buscarRespondentes.php?start=" + pagina + "&limit=10", (data) => {
     const respondentes = JSON.parse(data);
     respondentes.forEach((respondente) => {
       criarLinhaRespondente(respondente);
@@ -21,29 +38,127 @@ function carregarRespondentes() {
   });
 }
 
+function carregarPaginacao() {
+  $("#paginacao").empty();
+  let url = "";
+  if (idQuest == null) {
+    url = "../controller/totalQuestionarios.php";
+  } else {
+    url = "../controller/totalRespondentes.php";
+  }
+
+  $.get(url, (data) => {
+    const quantidade = JSON.parse(data).total;
+    if (quantidade > 10) {
+      criarBotoesPaginacao(quantidade);
+    }
+  });
+}
+
+function criarBotoesPaginacao(quantidade) {
+  const qtdPaginas = Math.ceil(quantidade / 10);
+  const divPaginas = document.getElementById("paginacao");
+
+  for (let i = 1; i <= qtdPaginas; i++) {
+    const paginaElemento = document.createElement("li");
+    const link = document.createElement("a");
+    link.innerText = i;
+    link.classList.add("page-link");
+    paginaElemento.classList.add("page-item");
+    paginaElemento.addEventListener("click", function () {
+      const iniPesquisa = (i - 1) * 10;
+      if (idQuest == null) {
+        carregarQuestionarios(iniPesquisa);
+      } else {
+        carregarRespondentes(iniPesquisa);
+      }
+
+      $(".page-item").each(function (index, element) {
+        element.classList.remove("active");
+      });
+      paginaElemento.classList.add("active");
+    });
+    paginaElemento.append(link);
+    divPaginas.appendChild(paginaElemento);
+
+    if (i == 1) {
+      paginaElemento.classList.add("active");
+    }
+  }
+}
+
+function selecionarQuestionario(idQuestionario) {
+  idQuest = idQuestionario;
+  $("#principal").empty();
+  $("h1").html("Oferecer para...");
+  document.title = "Oferecer para...";
+  criarTabelaRespondente();
+  carregarRespondentes(0);
+  carregarPaginacao();
+}
+
 function criarLinhaQuestionario(questionario) {
-  const table = document.getElementById("tabelaQuestionarios");
-  const row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
+  const linhaQuestionario = document.createElement("button");
+  linhaQuestionario.classList.add("list-group-item");
+  linhaQuestionario.classList.add("list-group-item-action");
+  linhaQuestionario.classList.add("list-group-item-light");
+  linhaQuestionario.value = questionario.id;
+  linhaQuestionario.textContent = questionario.nome;
+  linhaQuestionario.addEventListener("click", () => {
+    selecionarQuestionario(questionario.id);
+  });
+  $("#principal").append(linhaQuestionario);
+}
 
-  const colCheck = row.insertCell(0);
-  const colNome = row.insertCell(1);
-  const coldDescricao = row.insertCell(2);
-  const colNotaAprovacao = row.insertCell(3);
+function criarTabelaRespondente() {
+  const table = document.createElement("table");
+  const header = document.createElement("thead");
+  const row = document.createElement("tr");
+  const colNomeUsuario = document.createElement("td");
+  const colNome = document.createElement("td");
+  const colEmail = document.createElement("td");
+  const btnVoltar = document.createElement("button");
+  const btnEnviar = document.createElement("button");
 
-  const check = document.createElement("input");
-  check.setAttribute("type", "radio");
-  check.setAttribute("name", "codQuestionario");
-  check.setAttribute("value", questionario.id);
-  check.classList.add("form-check-input");
-  colCheck.appendChild(check);
+  table.id = idTabelaRespondentes;
+  table.classList.add("table");
+  table.classList.add("text-center");
+  header.classList.add("font-weight-bold");
 
-  colNome.innerHTML = questionario.nome;
-  coldDescricao.innerHTML = questionario.descricao;
-  colNotaAprovacao.innerHTML = questionario.notaAprovacao;
+  colNomeUsuario.textContent = "Nome de usuário";
+  colNome.textContent = "Nome";
+  colEmail.textContent = "Email";
+
+  btnVoltar.classList.add("btn");
+  btnVoltar.classList.add("btn-secondary");
+  btnVoltar.classList.add("mr-3");
+  btnVoltar.textContent = "Voltar";
+  btnVoltar.addEventListener("click", () => {
+    voltar();
+  });
+
+  btnEnviar.classList.add("btn");
+  btnEnviar.classList.add("btn-primary");
+  btnEnviar.textContent = "Oferecer";
+  btnEnviar.addEventListener("click", () => {
+    enviarOferta();
+  });
+
+  row.appendChild(document.createElement("td"));
+  row.appendChild(colNomeUsuario);
+  row.appendChild(colNome);
+  row.appendChild(colEmail);
+  header.appendChild(row);
+  table.appendChild(header);
+  table.appendChild(document.createElement("tbody"));
+
+  $("#principal").append(table);
+  $("#botoes").append(btnVoltar);
+  $("#botoes").append(btnEnviar);
 }
 
 function criarLinhaRespondente(respondente) {
-  const table = document.getElementById("tabelaRespondentes");
+  const table = document.getElementById(idTabelaRespondentes);
   const row = table.getElementsByTagName("tbody")[0].insertRow(table.length);
 
   const colCheck = row.insertCell(0);
@@ -56,6 +171,16 @@ function criarLinhaRespondente(respondente) {
   check.setAttribute("name", "codRespondente");
   check.setAttribute("value", respondente.id);
   check.classList.add("form-check-input");
+  check.checked = respondentes.includes(respondente.id);
+  check.addEventListener("change", () => {
+    const id = check.value;
+    if (check.checked) {
+      respondentes.push(Number(id));
+    } else {
+      const index = respondentes.indexOf(Number(id));
+      respondentes.splice(index, 1);
+    }
+  });
   colCheck.appendChild(check);
 
   colUsuario.innerHTML = respondente.login;
@@ -63,21 +188,26 @@ function criarLinhaRespondente(respondente) {
   colEmail.innerHTML = respondente.email;
 }
 
+function voltar() {
+  defaultValues();
+  carregarQuestionarios(0);
+  carregarPaginacao();
+}
+
 function enviarOferta() {
   if (!validarSelecao()) {
     return;
   }
-
   salvarOferta();
 }
 
 function validarSelecao() {
-  if (!$("input[name='codQuestionario']:checked").val()) {
+  if (!Number.isInteger(idQuest)) {
     exibirPopup("Selecione um questionário");
     return false;
   }
 
-  if (!$("input[name='codRespondente']:checked").val()) {
+  if (!respondentes.length) {
     exibirPopup("Selecione pelo menos um respondente");
     return false;
   }
@@ -87,12 +217,10 @@ function validarSelecao() {
 
 function salvarOferta() {
   const data = {
-    codQuestionario: $("input[name='codQuestionario']:checked").val(),
-    lstRespondentes: gerarListaRespondentes(),
+    codQuestionario: idQuest,
+    lstRespondentes: respondentes,
   };
-
-  console.log(JSON.stringify(data));
-
+  
   $.post(
     "../controller/gravarOfertaQuestionario.php",
     data,
@@ -101,17 +229,11 @@ function salvarOferta() {
         window.location.href = "menuInicial.php";
       } else {
         exibirPopup(response.message);
-        console.log(response.stackTrace);
+        console.error(response.stackTrace);
       }
     },
     "json"
   ).fail(function (xhr, status, error) {
     console.error(error);
-  });
-}
-
-function gerarListaRespondentes() {
-  return $.map($("input[name='codRespondente']:checked"), (elem, idx) => {
-    return $(elem).val();
   });
 }

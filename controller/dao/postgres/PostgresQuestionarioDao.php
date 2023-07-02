@@ -76,36 +76,7 @@ class PostgresQuestionarioDao extends DAO implements QuestionarioDao
 
     public function buscarTodos()
     {
-        $query = "SELECT 
-                    q.id, q.nome AS questionario_nome, q.descricao, q.dataCriacao, q.notaAprovacao,
-                    q.id_elaborador, u.login, u.senha, u.nome AS usuario_nome, u.email, u.instituicao
-                FROM
-                    " . $this->table_name . " AS q
-                INNER JOIN
-                    usuarios u ON u.id = q.id_elaborador
-                ORDER BY
-                    q.id ASC";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        $factory = new PostgresDaofactory();
-        $questionarioQuestaoDAO = $factory->getQuestionarioQuestaoDao();
-        $questionarios = [];
-        $questoes = [];
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-
-            //Busca as questões do questionário através do PostgresQuestionarioQuestaoDao.php
-            $questoes = $questionarioQuestaoDAO->buscarQuestoesQuestionario($row['id']);
-            $elaborador = new Elaborador($row['id_elaborador'], $row['login'], $row['senha'], $row['usuario_nome'], $row['email'], $row['instituicao']);
-            $questionario = new Questionario($row['id'], $row['questionario_nome'], $row['descricao'], $row['datacriacao'], $row['notaaprovacao'], $elaborador, $questoes);
-
-            $questionarios[] = $questionario;
-        }
-
-        return $questionarios;
+        return $this->buscarTodosOffset(0, 0);
     }
 
     public function buscarPorId($id)
@@ -201,6 +172,46 @@ class PostgresQuestionarioDao extends DAO implements QuestionarioDao
             //Busca as questões do questionário através do PostgresQuestionarioQuestaoDao.php
             $questoes = $questionarioQuestaoDAO->buscarQuestoesQuestionario($row['id']);
             $questionario = new Questionario($row['id'], $row['questionario_nome'], $row['descricao'], $row['dataCriacao'], $row['notaAprovacao'], $elaborador, $questoes);
+
+            $questionarios[] = $questionario;
+        }
+
+        return $questionarios;
+    }
+
+    public function buscarTodosOffset(int $start, int $limit)
+    {
+        $query = "SELECT 
+        q.id, q.nome AS questionario_nome, q.descricao, q.dataCriacao, q.notaAprovacao,
+        q.id_elaborador, u.login, u.senha, u.nome AS usuario_nome, u.email, u.instituicao
+    FROM
+        " . $this->table_name . " AS q
+    INNER JOIN
+        usuarios u ON u.id = q.id_elaborador
+    ORDER BY
+        q.id ASC";
+
+        if ($limit > 0) {
+            $query = $query . " "
+                . "offset " . $start . " "
+                . "limit " . $limit;
+        }
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        $factory = new PostgresDaofactory();
+        $questionarioQuestaoDAO = $factory->getQuestionarioQuestaoDao();
+        $questionarios = [];
+        $questoes = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+
+            //Busca as questões do questionário através do PostgresQuestionarioQuestaoDao.php
+            $questoes = $questionarioQuestaoDAO->buscarQuestoesQuestionario($row['id']);
+            $elaborador = new Elaborador($row['id_elaborador'], $row['login'], $row['senha'], $row['usuario_nome'], $row['email'], $row['instituicao']);
+            $questionario = new Questionario($row['id'], $row['questionario_nome'], $row['descricao'], $row['datacriacao'], $row['notaaprovacao'], $elaborador, $questoes);
 
             $questionarios[] = $questionario;
         }

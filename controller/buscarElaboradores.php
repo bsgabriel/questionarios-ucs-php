@@ -1,7 +1,14 @@
 <?php
 try {
  include_once("fachada.php");
- $elaboradores = $factory->getUsuarioDao()->buscarElaboradores();
+ $start = isset($_GET["start"]) ? addslashes(trim($_GET["start"])) : FALSE;
+ $limit = isset($_GET["limit"]) ? addslashes(trim($_GET["limit"])) : FALSE;
+
+ $elaboradores = null;
+ if (!$start && !$limit)
+  $elaboradores = $factory->getUsuarioDao()->buscarElaboradores();
+ else
+  $elaboradores = $factory->getUsuarioDao()->buscarElaboradoresOffset($start, $limit);
 
  $list = array();
  foreach ($elaboradores as $elaborador) {

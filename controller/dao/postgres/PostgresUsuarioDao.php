@@ -58,46 +58,12 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
 
     public function buscarElaboradores()
     {
-        $query = "select * from " . $this->table_name
-            . " where " . $this->col_tipo . " = 'E'"
-            . " order by " . $this->col_login;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        $elaboradores = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            $id = $row[$this->col_id];
-            $login = $row[$this->col_login];
-            $senha = $row[$this->col_senha];
-            $nome = $row[$this->col_nome];
-            $email = $row[$this->col_email];
-            $instituicao = $row[$this->col_instituicao];
-            $elaboradores[] = new Elaborador($id, $login, $senha, $nome, $email, $instituicao);
-        }
-        return $elaboradores;
+        return $this->buscarElaboradoresOffset(0, 0);
     }
 
     public function buscarRespondentes()
     {
-        $query = "select * from " . $this->table_name
-            . " where " . $this->col_tipo . " = 'R'"
-            . " order by " . $this->col_login;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        $respondentes = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            $id = $row[$this->col_id];
-            $login = $row[$this->col_login];
-            $senha = $row[$this->col_senha];
-            $nome = $row[$this->col_nome];
-            $email = $row[$this->col_email];
-            $telefone = $row[$this->col_telefone];
-            $respondentes[] = new Respondente($id, $login, $senha, $nome, $email, $telefone);
-        }
-        return $respondentes;
+        return $this->buscarRespondentesOffset(0, 0);
     }
 
     public function inserir($usuario)
@@ -295,6 +261,63 @@ class PostgresUsuarioDao extends DAO implements UsuarioDao
         }
 
         return $usuarios;
+    }
+
+    public function buscarElaboradoresOffset(int $start, int $limit)
+    {
+        $query = "select * from " . $this->table_name
+            . " where " . $this->col_tipo . " = 'E'"
+            . " order by " . $this->col_login;
+
+        if ($limit > 0) {
+            $query = $query . " "
+                . "offset " . $start . " "
+                . "limit " . $limit;
+        }
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        $elaboradores = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $id = $row[$this->col_id];
+            $login = $row[$this->col_login];
+            $senha = $row[$this->col_senha];
+            $nome = $row[$this->col_nome];
+            $email = $row[$this->col_email];
+            $instituicao = $row[$this->col_instituicao];
+            $elaboradores[] = new Elaborador($id, $login, $senha, $nome, $email, $instituicao);
+        }
+        return $elaboradores;
+    }
+
+    public function buscarRespondentesOffset(int $start, int $limit)
+    {
+        $query = "select * from " . $this->table_name
+            . " where " . $this->col_tipo . " = 'R'"
+            . " order by " . $this->col_login;
+
+        if ($limit > 0) {
+            $query = $query . " "
+                . "offset " . $start . " "
+                . "limit " . $limit;
+        }
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        $respondentes = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $id = $row[$this->col_id];
+            $login = $row[$this->col_login];
+            $senha = $row[$this->col_senha];
+            $nome = $row[$this->col_nome];
+            $email = $row[$this->col_email];
+            $telefone = $row[$this->col_telefone];
+            $respondentes[] = new Respondente($id, $login, $senha, $nome, $email, $telefone);
+        }
+        return $respondentes;
     }
 }
 
