@@ -8,5 +8,6 @@ interface QuestionarioDAO
  public function buscarPorId($id);
  public function buscarPorNome($nome);
  public function buscarPorElaborador($elaborador);
+ public function buscarTodosOffset(int $start, int $limit);
 }
 ?>

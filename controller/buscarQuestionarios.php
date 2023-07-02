@@ -1,6 +1,15 @@
 <?php
 include_once("fachada.php");
-$questionarios = $factory->getQuestionarioDao()->buscarTodos();
+$start = isset($_GET["start"]) ? addslashes(trim($_GET["start"])) : FALSE;
+$limit = isset($_GET["limit"]) ? addslashes(trim($_GET["limit"])) : FALSE;
+
+$questionarios = null;
+if (!$start && !$limit)
+ $questionarios = $factory->getQuestionarioDao()->buscarTodos();
+else
+ $questionarios = $factory->getQuestionarioDao()->buscarTodosOffset($start, $limit);
+
+
 
 $list = array();
 foreach ($questionarios as $questionario) {
