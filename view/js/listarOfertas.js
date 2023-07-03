@@ -1,16 +1,55 @@
 $(document).ready(() => {
-  ofertas();
+  carregarPaginacao();
+  ofertas(0);
 });
 
-function ofertas() {
+function ofertas(pagina) {
+  $("#ofertas").empty();
   const idUsuario = getCookie("ID_USUARIO_AUTENTICADO");
-
-  $.get("../controller/buscarOfertas.php?idUsuario=" + idUsuario, (data) => {
+  const url = "../controller/buscarOfertas.php?limit=3&start=" + pagina + "&idUsuario=" + idUsuario;
+  $.get(url, (data) => {
     const ofertas = JSON.parse(data);
     ofertas.forEach((oferta) => {
       mostrarOferta(oferta);
     });
   });
+}
+
+function carregarPaginacao() {
+  const idUsuario = getCookie("ID_USUARIO_AUTENTICADO");
+  const url = "../controller/totalOfertasRespondente.php?idUsuario=" + idUsuario;
+  $.get(url, (data) => {
+    const quantidade = JSON.parse(data).total;
+    if (quantidade > 3) {
+      criarBotoesPaginacao(quantidade);
+    }
+  });
+}
+
+function criarBotoesPaginacao(qtdElaboradores) {
+  const qtdPaginas = Math.ceil(qtdElaboradores / 3);
+  const divPaginas = document.getElementById("paginacao");
+
+  for (let i = 1; i <= qtdPaginas; i++) {
+    const paginaElemento = document.createElement("li");
+    const link = document.createElement("a");
+    link.innerText = i;
+    link.classList.add("page-link");
+    paginaElemento.classList.add("page-item");
+    paginaElemento.addEventListener("click", function () {
+      ofertas((i - 1) * 3);
+      $(".page-item").each(function (index, element) {
+        element.classList.remove("active");
+      });
+      paginaElemento.classList.add("active");
+    });
+    paginaElemento.append(link);
+    divPaginas.appendChild(paginaElemento);
+
+    if (i == 1) {
+      paginaElemento.classList.add("active");
+    }
+  }
 }
 
 function mostrarOferta(oferta) {

@@ -1,9 +1,8 @@
 <?php
-include_once "fachada.php";
+include_once("fachada.php");
 $idUsuario = isset($_GET["idUsuario"]) ? addslashes(trim($_GET["idUsuario"])) : FALSE;
-$start = isset($_GET["start"]) ? addslashes(trim($_GET["start"])) : FALSE;
-$limit = isset($_GET["limit"]) ? addslashes(trim($_GET["limit"])) : FALSE;
 
+// verifica se id de usuário foi informado
 if (!$idUsuario) {
  $response = array(
   "status" => "error",
@@ -13,7 +12,7 @@ if (!$idUsuario) {
  exit;
 }
 
-/* BUSCA DE USUÁRIO */
+// busca usuário
 $usuario = null;
 try {
  $usuario = $factory->getUsuarioDao()->buscarPorId($idUsuario);
@@ -28,6 +27,7 @@ try {
  exit;
 }
 
+// verifica se encontrou usuário
 if (is_null($usuario)) {
  $response = array(
   "status" => "error",
@@ -37,14 +37,20 @@ if (is_null($usuario)) {
  exit;
 }
 
-/* BUSCA DE OFERTAS */
+// verifica se é respondente
+if (!($usuario instanceof Respondente)) {
+ $response = array(
+  "status" => "error",
+  "message" => "Tipo de usuário inválido",
+ );
+ echo json_encode($response);
+ exit;
+}
 
+// busca as ofertas para o respondente
 $ofertas = null;
 try {
- if (!$start && !$limit)
-  $ofertas = $factory->getOfertaDao()->buscarOfertasPorRespondente($usuario);
- else
-  $ofertas = $factory->getOfertaDao()->buscarOfertasPorRespondenteOffset($usuario, $start, $limit);
+ $ofertas = $factory->getOfertaDao()->buscarOfertasPorRespondente($usuario);
 } catch (\Throwable $th) {
  $response = array(
   "status" => "error",
@@ -56,20 +62,9 @@ try {
  exit;
 }
 
-if (is_null($ofertas) || empty($ofertas)) {
- $response = array(
-  "status" => "error",
-  "message" => "Nenhuma oferta encontrada",
- );
- echo json_encode($response);
- exit;
-}
-
-$arrOfertas = array();
-foreach ($ofertas as $oferta) {
- $arrOfertas[] = $oferta->toJSon();
-}
-echo json_encode($arrOfertas);
-
+$response = array(
+ "total" => sizeof($ofertas),
+);
+echo json_encode($response);
 
 ?>
