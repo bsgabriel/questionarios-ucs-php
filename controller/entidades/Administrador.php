@@ -15,7 +15,6 @@ class Administrador extends Usuario
 
   public function toJson(): array
   {
-    // TODO: testar
     return array(
       "id" => $this->getId(),
       "tipo" => $this->getTipo(),
@@ -25,8 +24,6 @@ class Administrador extends Usuario
       "email" => $this->getEmail(),
       "campoExtra" => ""
     );
-    // $json = json_encode($arr);
-    // return !$json ? "" : $json;
   }
 }
 

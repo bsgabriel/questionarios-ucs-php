@@ -1,5 +1,5 @@
 <?php
-class Oferta
+class Oferta implements JsonObject
 {
   private $id;
   private $dataOferta;
@@ -60,6 +60,21 @@ class Oferta
     $this->respondente = $respondente;
 
     return $this;
+  }
+
+  public function fromJson($json)
+  {
+
+  }
+
+  public function toJson(): array
+  {
+    return array(
+      "id" => $this->getId(),
+      "dataOferta" => $this->getDataOferta(),
+      "questionario" => $this->getQuestionario()->toJson(),
+      "respondente" => $this->getRespondente()->toJson()
+    );
   }
 }
 

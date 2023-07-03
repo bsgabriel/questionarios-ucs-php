@@ -1,5 +1,5 @@
 <?php
-class Questao
+class Questao implements JsonObject
 {
   private $id;
   private $descricao;
@@ -75,5 +75,26 @@ class Questao
 
     return $this;
   }
+
+  public function fromJson($json)
+  {
+
+  }
+
+  public function toJson(): array
+  {
+    $arrAlternativas = [];
+    foreach ($this->getAlternativas() as $alternativa) {
+      $arrAlternativas[] = $alternativa->toJson();
+    }
+    return array(
+      "id" => $this->getId(),
+      "tipo" => $this->getTipo(),
+      "descricao" => $this->getDescricao(),
+      "imagem" => $this->getImagem(),
+      "alternativas" => $arrAlternativas
+    );
+  }
+
 }
 ?>

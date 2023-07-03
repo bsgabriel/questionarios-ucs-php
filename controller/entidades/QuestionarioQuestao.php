@@ -1,19 +1,19 @@
 <?php
-class QuestionarioQuestao
+class QuestionarioQuestao implements JsonObject
 {
  private $id;
  private $pontos;
  private $ordem;
- private $id_questionario;
- private $id_questao;
+ private $idQuestionario;
+ private $idQuestao;
 
- public function __construct($id, $pontos, $ordem, $id_questionario, $id_questao)
+ public function __construct($id, $pontos, $ordem, $idQuestionario, $idQuestao)
  {
   $this->id = $id;
   $this->pontos = $pontos;
   $this->ordem = $ordem;
-  $this->id_questionario = $id_questionario;
-  $this->id_questao = $id_questao;
+  $this->idQuestionario = $idQuestionario;
+  $this->idQuestao = $idQuestao;
  }
 
  public function getId()
@@ -52,28 +52,43 @@ class QuestionarioQuestao
   return $this;
  }
 
- public function getId_questionario()
+ public function getIdQuestionario()
  {
-  return $this->id_questionario;
+  return $this->idQuestionario;
  }
 
- public function setId_questionario($id_questionario)
+ public function setIdQuestionario($idQuestionario)
  {
-  $this->id_questionario = $id_questionario;
+  $this->idQuestionario = $idQuestionario;
 
   return $this;
  }
 
- public function getId_questao()
+ public function getIdQuestao()
  {
-  return $this->id_questao;
+  return $this->idQuestao;
  }
 
- public function setId_questao($id_questao)
+ public function setIdQuestao($idQuestao)
  {
-  $this->id_questao = $id_questao;
+  $this->idQuestao = $idQuestao;
 
   return $this;
+ }
+ public function fromJson($json)
+ {
+
+ }
+
+ public function toJson(): array
+ {
+  return array(
+   "id" => $this->getId(),
+   "pontos" => $this->getPontos(),
+   "ordem" => $this->getOrdem(),
+   "idQuestao" => $this->getIdQuestao(),
+   "idQuestionario" => $this->getIdQuestionario()
+  );
  }
 }
 
