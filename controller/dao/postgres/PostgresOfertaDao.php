@@ -10,12 +10,12 @@ include_once('../entidades/Elaborador.php');
 class PostgresOfertaDao extends DAO implements OfertaDAO
 {
     protected $table_name = 'ofertas';
-    
+
     public function inserir($oferta)
     {
         $query = "INSERT INTO " . $this->table_name .
-        " (data_oferta, id_questionario, id_respondente) VALUES" .
-        " (:data_oferta, :id_questionario, :id_respondente)";
+            " (data_oferta, id_questionario, id_respondente) VALUES" .
+            " (:data_oferta, :id_questionario, :id_respondente)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -23,9 +23,9 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
         $stmt->bindParam(":id_questionario", $oferta->getQuestionario()->getId());
         $stmt->bindParam(":id_respondente", $oferta->getRespondente()->getId());
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             return $this->conn->lastInsertId();
-        }else{
+        } else {
             return -1;
         }
     }
@@ -42,7 +42,7 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
         $stmt->bindParam(":id_questionario", $oferta->getQuestionario()->getId());
         $stmt->bindParam(":id_respondente", $oferta->getRespondente()->getId());
         $stmt->bindParam(':id', $oferta->getId());
-        
+
         if ($stmt->execute()) {
             return true;
         }
@@ -155,34 +155,45 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
 
         $ofertas = [];
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
 
             $respondente = new Respondente($row['id_respondente'], $row['login'], $row['senha'], $row['nome'], $row['email'], $row['telefone']);
             $oferta = new Oferta($row['id'], $row['data_oferta'], $questionario, $respondente);
-            
+
             $ofertas[] = $oferta;
         }
 
         return $ofertas;
     }
 
-    public function buscarOfertasPorRespondente($respondente)
+    public function buscarOfertasPorRespondente(Respondente $respondente)
+    {
+        return $this->buscarOfertasPorRespondenteOffset($respondente, 0, 0);
+    }
+
+    public function buscarOfertasPorRespondenteOffset(Respondente $respondente, int $start, int $limit)
     {
         $query = "SELECT
-                    o.id, o.data_oferta, o.id_questionario, o.id_respondente, q.nome as questionario_nome, q.descricao, q.dataCriacao, 
-                    q.notaAprovacao, q.id_elaborador, u.login, u.senha, u.nome AS usuario_nome, u.email, u.instituicao
-                FROM
-                    " . $this->table_name . " AS o
-                INNER JOIN
-                    questionario q ON q.id = o.id_questionario
-                INNER JOIN
-                    usuarios u ON u.id = q.id_elaborador
-                WHERE
-                    o.id_respondente = ?
-                ORDER BY
-                    o.id ASC";
+        o.id, o.data_oferta, o.id_questionario, o.id_respondente, q.nome as questionario_nome, q.descricao, q.dataCriacao, 
+        q.notaAprovacao, q.id_elaborador, u.login, u.senha, u.nome AS usuario_nome, u.email, u.instituicao
+            FROM
+                " . $this->table_name . " AS o
+            INNER JOIN
+                questionarios q ON q.id = o.id_questionario
+            INNER JOIN
+                usuarios u ON u.id = q.id_elaborador
+            WHERE
+                o.id_respondente = ?
+            ORDER BY
+                o.id ASC";
 
+        if ($limit > 0) {
+            $query = $query . " "
+                . "offset " . $start . " "
+                . "limit " . $limit;
+        }
+        
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $respondente->getId());
         $stmt->execute();
@@ -192,12 +203,12 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
         $questoes = [];
         $ofertas = [];
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
 
             //Busca as questões do questionário através do PostgresQuestionarioQuestaoDao.php
             $questoes = $questionarioQuestaoDAO->buscarQuestoesQuestionario($row['id_questionario']);
-            
+
             $elaborador = new Elaborador($row['id_elaborador'], $row['login'], $row['senha'], $row['usuario_nome'], $row['email'], $row['instituicao']);
             $questionario = new Questionario($row['id_questionario'], $row['questionario_nome'], $row['descricao'], $row['dataCriacao'], $row['notaAprovacao'], $elaborador, $questoes);
             $oferta = new Oferta($row['id'], $row['data_oferta'], $questionario, $respondente);

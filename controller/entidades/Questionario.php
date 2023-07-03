@@ -1,5 +1,5 @@
 <?php
-class Questionario
+class Questionario implements JsonObject
 {
  private $id;
  private $nome;
@@ -103,6 +103,27 @@ class Questionario
 
   return $this;
  }
-}
 
+ public function fromJson($json)
+ {
+
+ }
+
+ public function toJson(): array
+ {
+  $arrQuestoes = [];
+  foreach ($this->getQuestoes() as $questao) {
+   $arrQuestoes[] = $questao->toJson();
+  }
+
+  return array(
+   "id" => $this->getId(),
+   "nome" => $this->getNome(),
+   "descricao" => $this->getDescricao(),
+   "dataCriacao" => $this->getDataCriacao(),
+   "elaborador" => $this->getElaborador()->toJson(),
+   "questoes" => $arrQuestoes
+  );
+ }
+}
 ?>
