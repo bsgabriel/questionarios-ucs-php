@@ -9,8 +9,6 @@ if (!$start && !$limit)
 else
  $questionarios = $factory->getQuestionarioDao()->buscarTodosOffset($start, $limit);
 
-
-
 $list = array();
 foreach ($questionarios as $questionario) {
  $elaborador = array(

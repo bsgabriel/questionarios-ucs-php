@@ -82,7 +82,7 @@ function criarCardQuestionario(oferta) {
   interior.classList.add("btn");
   interior.classList.add("btn-primary");
   interior.textContent = "Responder";
-  interior.href = "responder.php";
+  interior.href = "responderQuestionario.php?questionario=" + oferta.questionario.id; // TODO: ver outra alternativa para não deixar id exposto
   footer.appendChild(interior);
   card.appendChild(footer);
 
