@@ -16,7 +16,7 @@ function carregarMenu() {
     $("#menuNav").append(createItem("Criar Questionários", "formQuestionario.php"));
     $("#menuNav").append(createItem("Oferecer Questionário", "oferecerQuestionario.php"));
   } else {
-    $("#menuNav").append(createItem("Responder Questionário", "#"));
+    $("#menuNav").append(createItem("Responder Questionário", "listarOfertas.php"));
     $("#menuNav").append(createItem("Editar Conta", "formUsuario.php?tipoUsuario=R&codUsuario=" + idUsuario));
   }
   $("#menuNav").append(createItem("Logout", "login.php")); // TODO: criar logout.php para limpar cookies, dados de sessão, e retornar à página de login
