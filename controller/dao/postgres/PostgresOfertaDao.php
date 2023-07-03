@@ -175,7 +175,7 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
                 FROM
                     " . $this->table_name . " AS o
                 INNER JOIN
-                    questionario q ON q.id = o.id_questionario
+                    questionarios q ON q.id = o.id_questionario
                 INNER JOIN
                     usuarios u ON u.id = q.id_elaborador
                 WHERE
