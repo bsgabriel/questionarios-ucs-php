@@ -1,3 +1,5 @@
+var form_data = new FormData();
+
 $(document).ready(() => {
   $("#formQuestao").submit((event) => {
     event.preventDefault();
@@ -11,35 +13,41 @@ function cadastrarQuestao() {
   }
 
   const tipoQuestao = $("input[name='tipo']:checked").val();
-  let data;
+
+  form_data.append("arquivo", $("#arquivo").prop("files")[0]);
+  form_data.append("enunciado", $("#descricao").val());
+  form_data.append("tipoQuestao", tipoQuestao);
+
+  // JSON
+  var jsonAlternativas, alternativas;
+
   if (tipoQuestao === "M") {
-    data = gerarQuestaoMultiplasEscolhas();
+    alternativas = gerarQuestaoMultiplasEscolhas();
   } else if (tipoQuestao === "V") {
-    data = gerarQuestaoVerdadeiroFalso();
-  } else if (tipoQuestao === "D") {
-    data = gerarQuestaoDiscursiva();
-  } else {
-    console.log("tipo inválido");
-    return;
+    alternativas = gerarQuestaoVerdadeiroFalso();
   }
 
-  // console.log(JSON.stringify(data));
+  jsonAlternativas = JSON.stringify(alternativas);
+  console.log(alternativas);
+  console.log(jsonAlternativas);
 
-  $.post(
-    "../controller/cadastrarQuestao.php",
-    data,
-    function (response) {
-      if (response.status === "success") {
-        exibirPopup(response.message);
-        window.location.href = "menuInicial.php";
-      } else {
-        exibirPopup(response.message);
-        console.log(response.stackTrace);
-      }
+  form_data.append("respostasJSON", jsonAlternativas);
+
+  $.ajax({
+    url: "../controller/cadastrarQuestao.php",
+    dataType: "text",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: "post",
+    success: function (response) {
+      $("#msg").html(response);
+      window.location.href = "menuInicial.php";
     },
-    "json"
-  ).fail(function (xhr, status, error) {
-    console.error(error);
+    error: function (response) {
+      $("#msg").html(response);
+    },
   });
 }
 
@@ -97,11 +105,7 @@ function gerarQuestaoMultiplasEscolhas() {
     });
   });
 
-  return {
-    tipoQuestao: "M",
-    enunciado: $("#descricao").val(),
-    respostas: arrAlternativas,
-  };
+  return arrAlternativas;
 }
 
 function gerarQuestaoVerdadeiroFalso() {
@@ -118,11 +122,11 @@ function gerarQuestaoVerdadeiroFalso() {
     correta: !isVerdade,
   });
 
-  return {
-    tipoQuestao: "V",
-    enunciado: $("#descricao").val(),
-    respostas: arrAlternativas,
-  };
+  for (var i = 0; i < arrAlternativas.length; i++) {
+    form_data.append("array[]", arrAlternativas[i]);
+  }
+
+  return arrAlternativas;
 }
 
 function gerarQuestaoDiscursiva() {

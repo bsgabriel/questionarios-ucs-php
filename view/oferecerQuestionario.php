@@ -1,5 +1,5 @@
 <?php
-include_once "components/cabecalho.php";
+include_once("components/cabecalho.php");
 include_once("components/menuNav.php");
 ?>
 
@@ -15,6 +15,6 @@ include_once("components/menuNav.php");
 <script type="text/javascript" src="js/oferecerQuestionario.js"></script>
 
 <?php
-include_once "components/modal.php";
-include_once "components/rodape.php";
+include_once("components/modal.php");
+include_once("components/rodape.php");
 ?>
