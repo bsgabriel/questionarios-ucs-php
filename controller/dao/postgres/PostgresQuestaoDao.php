@@ -138,5 +138,25 @@ class PostgresQuestaoDao extends DAO implements QuestaoDao
 
         return $questao;
     }
+
+    public function uploadImagem($questao)
+    {
+        $query = "UPDATE " . $this->table_name .
+            " SET descricao = :descricao, tipo = :tipo, imagem = :imagem" .
+            " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":descricao", $questao->getDescricao());
+        $stmt->bindParam(":tipo", $questao->getTipo());
+        $stmt->bindParam(":imagem", $questao->getImagem());
+        $stmt->bindParam(':id', $questao->getId());
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
 }
 ?>

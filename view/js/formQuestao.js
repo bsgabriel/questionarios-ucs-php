@@ -23,24 +23,30 @@ function cadastrarQuestao() {
     return;
   }
 
-  // console.log(JSON.stringify(data));
+  const imagem = $("#arquivo").prop("files")[0];
+  if (imagem != undefined) {
+    // uploadImagem(imagem);
+    data.imagem = imagem;
+  }
+  // TODO: ver como colocar imagem no json
+  console.log(JSON.stringify(data));
 
-  $.post(
-    "../controller/cadastrarQuestao.php",
-    data,
-    function (response) {
-      if (response.status === "success") {
-        exibirPopup(response.message);
-        window.location.href = "menuInicial.php";
-      } else {
-        exibirPopup(response.message);
-        console.log(response.stackTrace);
-      }
-    },
-    "json"
-  ).fail(function (xhr, status, error) {
-    console.error(error);
-  });
+  // $.post(
+  //   "../controller/cadastrarQuestao.php",
+  //   data,
+  //   function (response) {
+  //     if (response.status === "success") {
+  //       exibirPopup(response.message);
+  //       window.location.href = "menuInicial.php";
+  //     } else {
+  //       exibirPopup(response.message);
+  //       console.log(response.stackTrace);
+  //     }
+  //   },
+  //   "json"
+  // ).fail(function (xhr, status, error) {
+  //   console.error(error);
+  // });
 }
 
 function validarCampos() {
@@ -205,4 +211,22 @@ function removerOpcao(n) {
     $("#addOp").attr("onclick", "adicionarOpcao(" + (n - 1) + ")");
     $("#delOp").attr("onclick", "removerOpcao(" + (n - 1) + ")");
   }
+}
+
+function uploadImagem(imagem) {
+  $.ajax({
+    url: "http://localhost/questionarios/controller/uploadImagem.php",
+    dataType: "text",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: "post",
+    success: function (response) {
+      $("#msg").html(response);
+    },
+    error: function (response) {
+      $("#msg").html(response);
+    },
+  });
 }
