@@ -15,7 +15,7 @@ include_once("components/cabecalho.php");
      <label for="senha">Senha:</label>
      <input type="password" class="form-control" id="senha" name="senha" />
     </div>
-    <button type="submit" class="btn btn-primary">Login</button><br />
+    <button type="submit" class="btn btn-primary">Login</button><br/>
     <a href="formUsuario.php?tipoUsuario=R" class="btn btn-link mt-3">Cadastrar</a>
    </form>
   </div>
