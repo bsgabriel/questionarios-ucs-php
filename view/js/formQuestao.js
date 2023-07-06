@@ -43,7 +43,7 @@ function cadastrarQuestao() {
     type: "post",
     success: function (response) {
       $("#msg").html(response);
-      // window.location.href = "menuInicial.php";
+      window.location.href = "menuInicial.php";
     },
     error: function (response) {
       $("#msg").html(response);
