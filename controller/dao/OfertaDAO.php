@@ -10,4 +10,5 @@ interface OfertaDAO
   public function buscarOfertasPorQuestionario($questionario); //Busca todas ofertas de um questionário
   public function buscarOfertasPorRespondente(Respondente $respondente); //Busca todas ofertas de um respondente
   public function buscarOfertasPorRespondenteOffset(Respondente $respondente, int $start, int $limit); //Busca todas ofertas de um respondente
+  public function buscarResultadosPorRespondente(int $idRespondente);
 }

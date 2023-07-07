@@ -70,10 +70,10 @@ class Oferta implements JsonObject
   public function toJson(): array
   {
     return array(
-      "id" => $this->getId(),
-      "dataOferta" => $this->getDataOferta(),
-      "questionario" => $this->getQuestionario()->toJson(),
-      "respondente" => $this->getRespondente()->toJson()
+      // "id" => $this->getId(),
+      // "dataOferta" => $this->getDataOferta(),
+      // "respondente" => $this->getRespondente()->toJson(),
+      "questionario" => $this->getQuestionario()->toJson()
     );
   }
 }

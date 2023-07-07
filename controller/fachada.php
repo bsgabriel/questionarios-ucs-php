@@ -14,5 +14,6 @@ include_once(__DIR__ . '/dao/QuestionarioQuestaoDAO.php');
 include_once(__DIR__ . '/dao/DaoFactory.php');
 include_once(__DIR__ . '/dao/OfertaDAO.php');
 include_once(__DIR__ . '/dao/postgres/PostgresDaoFactory.php');
+include_once(__DIR__ . '/dao/DAO.php');
 $factory = new PostgresDaoFactory();
 ?>

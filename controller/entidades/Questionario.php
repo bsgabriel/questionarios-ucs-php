@@ -122,7 +122,8 @@ class Questionario implements JsonObject
    "descricao" => $this->getDescricao(),
    "dataCriacao" => $this->getDataCriacao(),
    "elaborador" => $this->getElaborador()->toJson(),
-   "questoes" => $arrQuestoes
+   "questoes" => $arrQuestoes,
+   "nota" => strval($this->getNotaAprovacao())
   );
  }
 }

@@ -1,0 +1,5 @@
+RewriteEngine On # Turn on the rewriting engine
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+RewriteRule ^usuario/?$ controller/api-rest/usuario.php [NC,L]
+RewriteRule ^usuario/([0-9]+)/?$ controller/api-rest/usuario.php?id=$1 [NC,L]

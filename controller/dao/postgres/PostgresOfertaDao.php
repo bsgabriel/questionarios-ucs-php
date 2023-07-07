@@ -193,7 +193,7 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
                 . "offset " . $start . " "
                 . "limit " . $limit;
         }
-        
+
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $respondente->getId());
         $stmt->execute();
@@ -214,6 +214,47 @@ class PostgresOfertaDao extends DAO implements OfertaDAO
             $oferta = new Oferta($row['id'], $row['data_oferta'], $questionario, $respondente);
 
             $ofertas[] = $oferta;
+        }
+
+        return $ofertas;
+    }
+
+    public function buscarResultadosPorRespondente(int $idRespondente)
+    {
+        $query = "SELECT
+                    o.id, o.data_oferta, o.id_questionario, o.id_respondente, q.nome as questionario_nome, q.descricao, q.dataCriacao as datac, 
+                    q.notaAprovacao as nota, q.id_elaborador, u.login, u.senha, u.nome AS usuario_nome, u.email, u.instituicao
+                FROM
+                    " . $this->table_name . " AS o
+                INNER JOIN
+                    questionarios q ON q.id = o.id_questionario
+                INNER JOIN
+                    usuarios u ON u.id = q.id_elaborador
+                WHERE
+                    o.id_respondente = ?
+                ORDER BY
+                    o.id ASC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $idRespondente);
+        $stmt->execute();
+
+        $ofertas = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+
+            $elaborador = new Elaborador($row['id_elaborador'], $row['login'], $row['senha'], $row['usuario_nome'], $row['email'], $row['instituicao']);
+            $questionario = new Questionario($row['id_questionario'], $row['questionario_nome'], $row['descricao'], $row['datac'], $row['nota'], $elaborador, null);
+            $oferta = new Oferta($row['id'], $row['data_oferta'], $questionario, null);
+
+            $ofertas[] = $oferta;
+        }
+
+        $resultadosJSON = array();
+
+        foreach ($ofertas as $oferta) {
+            $resultadosJSON[] = $oferta->toJson();
         }
 
         return $ofertas;

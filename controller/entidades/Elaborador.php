@@ -34,7 +34,7 @@ class Elaborador extends Usuario
       "tipo" => $this->getTipo(),
       "nome" => $this->getNome(),
       "login" => $this->getLogin(),
-      "senha" => $this->getSenha(),
+      // "senha" => $this->getSenha(),
       "email" => $this->getEmail(),
       "campoExtra" => $this->getInstituicao()
     );
